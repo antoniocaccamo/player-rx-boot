@@ -1,0 +1,175 @@
+html, body, img #map-canvas {
+    height: 100%;
+    width:  100%;
+    overflow: hidden;
+    background-color: black !important;
+    font-family: Tahoma;
+    color: white;
+    /*
+        background: #1E1E1E;
+        color: #f9f9f9;
+        */
+}
+.logo {
+    height: auto !important;
+    width : 80% !important;
+    vertical-align: 0px;
+
+}
+
+#address {
+	font-size: 2vw;
+	font-weight: bold;
+}
+
+.form-control {
+	height: auto;
+}
+
+.container-fluid, .panel {
+    height: 100%;
+
+    
+    
+}
+
+.table, .table .table {
+    height: 80%;
+    margin-bottom: 0px;
+    background: inherit;     
+}
+
+.panel {
+    background: inherit; 
+}
+
+.panel>.table-responsive {
+    height: 100%;
+}
+
+.table>tbody>tr>td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 0px;
+}
+
+ul {
+    margin: 0px;
+}
+
+.table  .table  tr {
+    margin: 2px;
+}
+.img-today {
+    /*width  : 80%;*/
+    height: auto !important;
+    width : 70% !important;
+    
+
+}
+
+.img-forecast {
+    /*width  : 80%;*/
+    height: auto !important;
+    width : 40% !important;
+    
+
+}
+.topimg {
+    padding-top: 10px;
+}
+.widthb {
+    width: 33%;
+          font-size : 4vw ! important;
+}
+.width33 {
+    width: 33%;
+       text-align: center;
+
+}
+
+
+.fore {
+   font-size : 4vw ! important;
+   padding-bottom: 2px;
+   padding-top: 2px;   
+}
+
+h3 {
+   text-align: center;
+   font-size : 3vw ! important;
+
+}
+
+h4 {
+   text-align: center;
+   font-size : 4vw ! important;
+}
+.btn1  {
+   font-size : 5vw !important;
+  background-color: #ffffff !important;
+   border: none !important;
+}
+.btn  {
+   font-size : 4vw ! important;
+ 
+
+}
+.btn-danger{
+    margin-top   : 0px;
+    margin-left  : 0px;
+    margin-bottom: 0px;
+    border-radius: 10px !important;
+    padding : 0px; 
+}
+
+.btn-primary{
+    margin-top   : 0px;
+    margin-left  : 0px;
+    margin-bottom: 0px;
+    border-radius: 10px !important;
+    padding : 0px;
+
+}
+
+.btn-group  {
+   text-align: center ! important;
+   width : 60%;
+   padding-top: 2px ! important;
+
+}
+
+.btn-group > button {
+    margin-top   : 0px;
+    margin-left  : 0px;
+    margin-bottom: 0px;
+    border-radius: 15px !important;
+    padding : 2px;
+    font-size: 2vw;
+}
+.nav {
+	font-size: 3vw;
+}
+
+
+
+
+.vmiddle {
+    vertical-align: middle !important;
+    height: 30%;
+}
+
+#address {
+    font-size: 3vw;
+}
+
+#home{
+	height : 90%;
+}
+
+.width25{
+    width: 20%
+}
+
+
+

@@ -1,0 +1,23 @@
+name: player-rx-boot build
+
+on: [push, pull_request]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    
+    - name : checkout
+      uses : actions/checkout@master
+      
+    - name : gradle build
+      uses : OrangeLabs-moe/gradle-actions@v5.0-openjdk-8
+      with :
+        args: build -x test
+
+ #  - name : gradle sonarqube
+ #    uses : OrangeLabs-moe/gradle-actions@v5.0-openjdk-8
+ #    with :
+ #      args: sonarqube -x test

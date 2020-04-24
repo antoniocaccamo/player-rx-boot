@@ -1,0 +1,78 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.6.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id "com.github.johnrengelman.shadow"            version "5.2.0"
+	id "com.diffplug.gradle.eclipse.mavencentral"   version "3.21.0"
+	id "application"
+	id 'java'
+}
+
+group = 'me.antoniocaccamo.digitalsignage'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+
+apply plugin: 'com.diffplug.gradle.eclipse.mavencentral'
+eclipseMavenCentral {
+	release SWT_VERSION, {
+		implementation 'org.eclipse.swt'
+		implementation 'org.eclipse.jface'
+		useNativesForRunningPlatform()
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	runtimeOnly                 "com.h2database:h2"
+
+	implementation              "ws.schild:jave-core:2.7.3"
+	implementation              "ws.schild:jave-nativebin-win64:2.7.3"
+
+
+	implementation              'com.fasterxml.jackson.dataformat:jackson-dataformats-text:2.9.8'
+	implementation              'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.8'
+	implementation              'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.8'
+	implementation              'com.fasterxml.jackson.dataformat:jackson-dataformat-properties:2.8.8'
+
+	implementation              "org.apache.commons:commons-lang3:3.9"
+
+	// This dependency is used by the application.
+	implementation              "com.google.guava:guava:28.1-jre"
+	implementation              "com.diffplug.durian:durian-swt:$VER_DURIAN_SWT"
+	implementation              "com.diffplug.durian:durian-rx:$VER_DURIAN_RX"
+	implementation              "io.reactivex.rxjava2:rxjava:$VER_RXJAVA"
+	implementation              "com.diffplug.durian:durian-core:$VER_DURIAN"
+	implementation              "com.diffplug.durian:durian-collect:$VER_DURIAN"
+	implementation              "com.diffplug.durian:durian-concurrent:$VER_DURIAN"
+
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	annotationProcessor 'org.projectlombok:lombok'
+
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+
+	testAnnotationProcessor 'org.projectlombok:lombok'
+}
+
+test {
+	useJUnitPlatform()
+}
