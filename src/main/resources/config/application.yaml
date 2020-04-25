@@ -26,6 +26,6 @@ spring:
 
   h2:
     console:
-      enabled : false
+      enabled : true
 server:
   port : 9090

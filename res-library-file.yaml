@@ -1,2 +1,18 @@
 ---
-collection: []
+collection:
+- !<local>
+  id: 3
+  type: "VIDEO"
+  path: "default/videos/at.video.mov"
+  duration: 12.000000000
+- !<remote>
+  id: 4
+  type: "WEATHER"
+  path: null
+  duration: 8.000000000
+  remote: null
+- !<local>
+  id: 1
+  type: "PHOTO"
+  path: "default/images/at.image.jpg"
+  duration: 5.000000000

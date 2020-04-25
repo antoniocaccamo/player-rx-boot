@@ -44,18 +44,20 @@ public class DBInitHelper {
         Sequence sequence = null;
 
         sequence = sequenceService.getSequenceByName(Constants.DefaultSequenceName)
-                .orElseGet(() -> Constants.DEFAULT_SEQUENCE())
+                .orElseGet(() -> createDefaultSequence() )
         ;
 
         return sequence;
     }
 
     @Transactional
-    private Sequence createDefaultSequence() throws IOException {
+    private Sequence createDefaultSequence() {
 
         log.warn("creating default sequence ..");
 
-        Sequence sequence = Constants.DEFAULT_SEQUENCE();
+        Sequence sequence = null;
+        try {
+        sequence = Constants.DEFAULT_SEQUENCE();
         sequence.getMedias()
                 .stream()
                 .forEach(media -> {
@@ -67,7 +69,9 @@ public class DBInitHelper {
         sequenceService.save(sequence, Files.createTempFile("xxx", ".syml"));
         ObjectMapper mapper = new ObjectMapper();
         log.info("default sequence saved : {} " , sequence);
-
+		} catch (Exception e) {
+            log.error("error occurred", e);
+        }
 
         return sequence;
 

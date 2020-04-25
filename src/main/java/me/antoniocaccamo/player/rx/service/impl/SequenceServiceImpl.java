@@ -7,6 +7,7 @@ import com.google.common.cache.CacheBuilder;
 import lombok.extern.slf4j.Slf4j;
 import me.antoniocaccamo.player.rx.model.Model;
 import me.antoniocaccamo.player.rx.model.sequence.Sequence;
+import me.antoniocaccamo.player.rx.model.resource.Resource;
 import me.antoniocaccamo.player.rx.repository.SequenceRepository;
 import me.antoniocaccamo.player.rx.service.MediaService;
 import me.antoniocaccamo.player.rx.service.ResourceService;
@@ -71,16 +72,16 @@ public class SequenceServiceImpl implements SequenceService {
 
     @Override
     public Sequence save(Sequence sequence, Path path) throws IOException {
-//        sequence.getMedias()
-//                .stream()
-//                .forEach(media -> {
-//                    Resource resource = media.getResource();
-//                    resourceService.save(resource);
-//                    //media.setResource(resource);
-//                    mediaService.save(media);
-//                });
-//        sequenceRepository.save(sequence);
-//        sequenceCache.put(sequence.getName(), sequence);
+        sequence.getMedias()
+                .stream()
+                .forEach(media -> {
+                    Resource resource = media.getResource();
+                    resourceService.save(resource);
+                    //media.setResource(resource);
+                    mediaService.save(media);
+                });
+        sequenceRepository.save(sequence);
+        sequenceCache.put(sequence.getName(), sequence);
 //        return sequence;
         log.info("saving seguence {} to file : {}", sequence, path);
         path.toFile().mkdirs();

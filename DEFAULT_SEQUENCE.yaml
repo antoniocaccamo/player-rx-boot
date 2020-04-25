@@ -1,0 +1,87 @@
+---
+id: null
+name: "DEFAULT_SEQUENCE"
+location: "LOCAL"
+medias:
+- id: null
+  location: null
+  type: null
+  path: null
+  daysOfWeek: null
+  limited: null
+  start: null
+  end: null
+  from:
+  - 9
+  - 0
+  to:
+  - 20
+  - 0
+  resource: !<local>
+    id: null
+    type: "PHOTO"
+    path: "default/images/at.image.jpg"
+    duration: 5.000000000
+  duration: 5.000000000
+- id: null
+  location: null
+  type: null
+  path: null
+  daysOfWeek: null
+  limited: null
+  start: null
+  end: null
+  from:
+  - 9
+  - 0
+  to:
+  - 20
+  - 0
+  resource: !<remote>
+    id: null
+    type: "WEATHER"
+    path: null
+    duration: 8.000000000
+    remote: null
+  duration: 8.000000000
+- id: null
+  location: null
+  type: null
+  path: null
+  daysOfWeek: null
+  limited: null
+  start: null
+  end: null
+  from:
+  - 9
+  - 0
+  to:
+  - 20
+  - 0
+  resource: !<local>
+    id: null
+    type: "VIDEO"
+    path: "default/videos/at.video.mov"
+    duration: 12.000000000
+  duration: 12.000000000
+- id: null
+  location: null
+  type: null
+  path: null
+  daysOfWeek: null
+  limited: null
+  start: null
+  end: null
+  from:
+  - 9
+  - 0
+  to:
+  - 20
+  - 0
+  resource: !<remote>
+    id: null
+    type: "WEATHER"
+    path: null
+    duration: 8.000000000
+    remote: null
+  duration: 8.000000000
