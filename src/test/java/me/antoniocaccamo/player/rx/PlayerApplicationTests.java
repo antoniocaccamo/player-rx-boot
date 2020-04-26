@@ -1,4 +1,4 @@
-package me.antoniocaccamo.digitalsignage.player;
+package me.antoniocaccamo.player.rx;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
