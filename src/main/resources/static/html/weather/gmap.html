@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title></title> 
+ 
+
+
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="../libs/bootstrap/3.3.6/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="../libs/bootstrap/3.3.6/bootstrap-theme.min.css">
+    
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="../libs/leaflet/leaflet.css">
+    <link rel="stylesheet" href="../libs/leaflet/leaflet-search.css">
+    <link rel="stylesheet" href="../libs/leaflet/style.css">
+
+    <style>
+
+    .search-input,
+    .leaflet-control-search {
+        max-width:400px;
+    }
+    #map{
+        margin  : 0px;
+        padding : 0px;
+        width   : 100%;
+    }
+    </style>
+</head>
+
+
+<body>
+	<div class="container-fluid">
+    
+    <table class="table">
+					<tr>
+						<td class="bg-primary width25" id="lbl_lat"></td>
+
+						<td class="width25" id="lat"></td>
+
+						<td class="bg-primary width25" id="lbl_lng"></td>
+
+						<td class="width25" id="lng"></td>
+					</tr>
+					
+					<tr>
+					   <td class="bg-primary width25" id="lbl_address"></td>
+
+                        <td colspan="3" id="address">
+                        	<!--<input id="address" type="text" class="form-control"  aria-describedby="basic-addon1">-->
+                        </td>
+					</tr>
+					
+					<tr>
+						<td colspan="4">
+						
+							<ul class="nav nav-tabs">
+								<li class="active">
+									<a data-toggle="pill" href="#home"    onclick="showMap();" id="lbl_home"></a>
+								</li>
+								<li>
+									<a data-toggle="pill" href="#preview" onclick="showPreview();" id="lbl_preview">Anteprima</a>
+								</li>    
+							</ul>
+							
+							<div class="tab-content">
+								
+								<div id="home" class="tab-pane fade in active" style="min-height: 300px">
+								  <div id="map"></div>
+								</div>
+								
+								<div id="preview" class="tab-pane fade" style="min-height: 300px">
+									<div class="container-fluid vmiddle" id="weather_table">
+	
+								        <div class="row vmiddle" id="weather_forecast">            
+								        </div>
+								        
+									</div>
+								</div>
+							
+							</div>
+						
+						</td>
+					</tr>
+					
+				</table>
+
+    
+
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="../libs/jquery/1.11.3/jquery.min.js"></script>
+<script	src="../libs/jquery/plugins/purl.js"></script>
+<!-- Bootstrap -->
+<script src="../libs/bootstrap/3.3.6/bootstrap.min.js"></script>
+<script src="../libs/underscore/1.8.3/underscore-min.js"></script>
+<!-- Leaflet -->
+<script src="../libs/leaflet/leaflet.js"></script>
+<script src="../libs/leaflet/leaflet-search.js"></script>
+<!-- PLayer -->
+<script src="../libs/player.js"></script>
+
+<script type="text/javascript">
+	
+	var mylatlng;
+	var mylang  ;
+	
+	var coords;
+	var latlng;
+    var map;
+
+	$(document).ready(function() {
+		
+		Player.weather.template = 0;      
+		
+		mylatlng = $.url().param("latlng");
+		
+		var ll = mylatlng.split(",");
+		Player.weather.setCoordinates( ll[0], ll[1] );
+		mylang = $.url().param("lang");
+		if ( mylang == null || '' == mylang || Player.weather.labels[mylang] == null) {
+			mylang = 'en';	
+		}
+		Player.weather.lang = mylang;
+        
+        Player.weather.wwo.refresh();
+        
+		$('#lbl_lat').text(Player.weather.labels[Player.weather.lang].latitude);
+		$('#lbl_lng').text(Player.weather.labels[Player.weather.lang].longitude);
+		$('#lbl_address').text(Player.weather.labels[Player.weather.lang].address);
+		//$('#address').attr('placeholder', Player.weather.labels[Player.weather.lang].address_placeholder);
+		$('#lbl_home').text(Player.weather.labels[Player.weather.lang].home);
+		$('#lbl_preview').text(Player.weather.labels[Player.weather.lang].preview);
+        
+        
+        map = new L.Map('map', {zoom: 13, center: Player.weather.latlng });
+        map.addLayer(new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'));	//base layer
+	
+        map.addControl( new L.Control.Search({
+            url: 'http://nominatim.openstreetmap.org/search?format=json&q={s}',
+            jsonpParam: 'json_callback',
+            propertyName: 'display_name',
+            propertyLoc: ['lat','lon'],
+            marker: L.circleMarker([0,0],{radius:30}),
+            autoCollapse: true,
+            autoType: false,
+            minLength: 2
+        }) )
+        
+        $('#lat').text(Player.weather.latlng.lat);
+        $('#lng').text(Player.weather.latlng.lng);
+        
+		
+		
+		$('#address').keypress(function( event ) {
+			  if (  event.which == 13 ) {
+				  event.preventDefault();
+				  Player.weather.geocodeAddress( $('#address').val() );
+				}
+		});
+        
+        map.on('move', function () { 
+            Player.weather.setCoordinates( map.getCenter().lat, map.getCenter().lng );
+            $('#lat').text(Player.weather.latlng.lat.toFixed(2));
+            $('#lng').text(Player.weather.latlng.lng.toFixed(2));      
+            theJavaFunction(Player.weather.latlngToQuery());	
+        });
+		 
+        
+		
+	});
+	
+
+	function getCoords() {
+        return  Player.weather.latlngToQuery() ; 
+    }
+	
+	function showMap() {
+		$('#map-canvas').show();
+		$('#weather_table').hide(); 
+		
+	}
+	
+	function showPreview() {
+		$('#map-canvas').hide();
+		$('#weather_table').show();
+        Player.weather.setCoordinates(map.getCenter().lat, map.getCenter().lng);        	
+		Player.weather.wwo.refresh(); 
+        theJavaFunction(Player.weather.latlngToQuery());	
+		
+    }
+	
+</script>
+
+
+
+</body></html>

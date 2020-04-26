@@ -24,10 +24,11 @@ public class Application {
 		beans.sort( (o1, o2) -> o1.compareTo(o2) );
 		beans.stream().forEach(
 				beanName -> {
-					log.debug("{}) Bean Name: {} ", counter.incrementAndGet(), beanName);
+					log.info("{}) Bean Name: {} ", counter.incrementAndGet(), beanName);
 				});
 
 		log.debug("**************** END: Total Bean: {} ******************", CONTEXT.getBeanDefinitionCount());
+		
 		ApplicationUI mainUI = CONTEXT.getBean(ApplicationUI.class);
 		try {
 			mainUI.show();
@@ -35,6 +36,7 @@ public class Application {
 			log.error("error => ", e);
 			System.exit(SpringApplication.exit(CONTEXT, () -> 0 ));
 		}
+	
 	}
 
 	/*@EventListener

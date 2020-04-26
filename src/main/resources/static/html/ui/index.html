@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <title>player-rx : ui</title>
+
+    <!-- Required Stylesheets -->
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
+
+    <!-- Required scripts -->
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+
+    <!-- leaflet -->
+    <link rel="stylesheet" href="//unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="//unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="//unpkg.com/vue2-leaflet"></script>
+
+
+    <style>
+       html, body, #app, .container-fluid, .row, .col {
+        height: 100%;
+        width: : 100%;
+        overflow: hidden;
+        background-color: black;
+        font-family: Tahoma;
+        color: white;
+        /*
+            background: #1E1E1E;
+            color: #f9f9f9;
+            */
+    }
+
+    .vue2leaflet-map {
+        height: 100% !important;
+        width: : 100%;
+        }
+
+    </style>
+</head>
+
+<body>
+<!-- Our application root element -->
+<div id="app">
+    <b-container fluid style="margin:0px; padding:0px">
+<!--        <b-jumbotron header="Bootstrap Vue"-->
+<!--                     lead="Bootstrap 4 Components for Vue.js 2"-->
+<!--        >-->
+<!--            <p>For more information visit our website</p>-->
+<!--            <b-btn variant="primary" href="https://bootstrap-vue.js.org/">More Info</b-btn>-->
+<!--        </b-jumbotron>-->
+
+<!--        <b-form-group horizontal-->
+<!--                      :label-cols="4"-->
+<!--                      description="Let us know your name."-->
+<!--                      label="Enter your name"-->
+<!--        >-->
+<!--            <b-form-input v-model.trim="name"></b-form-input>-->
+<!--        </b-form-group>-->
+
+<!--        <b-alert variant="success" :show="showAlert">-->
+<!--            Hello {{ name }}-->
+<!--        </b-alert>-->
+
+        <!-- browser -->
+        <b-row no-gutters v-show="show.browser">
+            <b-col>
+                <b-alert variant="success" show>browser</b-alert>
+            </b-col>
+        </b-row>
+
+        <!-- photo -->
+        <b-row no-gutters v-show="show.photo">
+            <b-col>
+                <b-alert variant="info" show>photo</b-alert>
+                <b-img :src="resource.photo" style="width:100%; height:100%"/>
+            </b-col>
+        </b-row>
+
+        <!-- video -->
+        <b-row no-gutters v-show="show.video">
+            <b-col>
+                <b-alert variant="info" show>video</b-alert>
+            </b-col>
+        </b-row>
+
+        <!-- weather -->
+        <b-row no-gutters v-show="show.weather">
+            <b-col>
+                <b-alert variant="error" show >weather</b-alert>
+            </b-col>
+        </b-row>
+
+        <!-- geo -->
+        <b-row no-gutters v-show="show.geo">
+            <b-col>
+                <b-alert variant="error" show >geo</b-alert>
+                <l-map  ref="lmap"
+                        v-if="show.geo"
+                        :zoom="leaftObject.zoom"
+                        :center="leaftObject.center"
+                        :options="leaftObject.mapOptions"
+                        @update:center="centerUpdate"
+                        @update:zoom="zoomUpdate"
+                >
+                    <l-tile-layer
+                            :url="leaftObject.url"
+                            :attribution="leaftObject.attribution"
+                    />
+                </l-map>
+            </b-col>
+        </b-row>
+
+    </b-container>
+</div>
+
+<!-- Start running your app -->
+<script>
+
+
+var data = {
+
+    'name' : '',
+
+    'show' : {
+        'browser': false,
+        'photo'  : false,
+        'video'  : false,
+        'weather': false,
+        'geo'    : true
+    },
+
+    'resource' : {
+        'browser': {},
+        'photo'  : 'https://picsum.photos/900/250/?image=2',
+        'video'  : {},
+        'weather': {}
+    },
+
+    'weather' : {
+        'lat' : 45.07,
+        'lng': 7.47,
+        'zoom': 13,
+        'conditions' : {}
+    },
+
+    'items' : [
+        {
+          'text': 'Dashboard',
+          'disabled': false,
+          'href': 'breadcrumbs_dashboard',
+        },
+        {
+           'text': 'Link 1',
+          'disabled': false,
+          'href': 'breadcrumbs_link_1',
+        },
+        {
+           'text': 'Link 2',
+          'disabled': true,
+          'href': 'breadcrumbs_link_2',
+        },
+    ]
+};
+
+Vue.component('l-map'       , window.Vue2Leaflet.LMap);
+Vue.component('l-tile-layer', window.Vue2Leaflet.LTileLayer);
+Vue.component('l-marker'    , window.Vue2Leaflet.LMarker);
+
+window.app = new Vue({
+        el: "#app",
+        data: data,
+        /* components: {
+            LMap,
+            LTileLayer,
+            LMarker,
+            LPopup,
+            LTooltip
+        },*/
+        computed: {
+          showAlert : function() {
+            if (this.name.length > 4)
+                return true;
+            return false;
+          },
+          leaftObject : function() {
+            var lft = {
+                  'center'     : L.latLng(data.weather.lat, data.weather.lng),
+                  'zoom'       : data.weather.zoom,
+                  'url'        : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  'attribution': '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+                   'mapOptions': { 'zoomSnap': 0.5}
+            };
+            return lft
+          }
+        },
+        methods : {
+            centerUpdate : function() {
+                console.log( 'center @ : ' + this.$refs.lmap.mapObject.getCenter());
+            },
+            zoomUpdate : function() {}
+        }
+      })
+    </script>
+
+</body>
+</html>

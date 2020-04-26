@@ -20,7 +20,7 @@ public class PhotoUI extends BrowserUI {
         Label label = new Label(this, SWT.NONE);
         label.setText(getClass().getSimpleName());
         Layouts.setGridData(label).grabAll();
-        final String url = String.format("http://localhost:%s/html/ui/photo/", Application.SERVER_PORT);
+        final String url = String.format("http://localhost:%s/html/ui/index.html", Application.SERVER_PORT);
         log.info("getIndex() [{}] - url  : {}", this.getMonitorUI().getIndex(), url);
         browser.setUrl( url );
     }

@@ -4,7 +4,7 @@ spring:
     pref-file: prefs.yaml
     res-library-file: res-library-file.yaml
     legacy-pref-file: prefs.properties
-    resource-prefix-path: ${user.home}/.at/player-rx/resources
+    resource-prefix-path: ${user.home}/.at/player-rx-boot/resources
   main:
     banner-mode: "console"
     lazy-initialization: false
@@ -23,9 +23,13 @@ spring:
         hbm2ddl:
           auto: update
         show_sql: true
-
+  
+  resources:
+    static-location:classpath:/static, file:/${user.home}/.at/player-rx-boot/resources
+  
   h2:
     console:
       enabled : true
+
 server:
   port : 9090
