@@ -1,70 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>image-js</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-    <link rel="stylesheet" href="../../weather/weather.css">
+    <title>player-rx : ui</title>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="../../libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="../../libs/underscore/1.8.3/underscore-min.js"></script>
-    <script src="../../libs/jquery/plugins/purl.js"></script>
-    <!-- Bootstrap -->
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="../../libs/bootstrap/3.3.6/bootstrap.min.css">
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="../../libs/bootstrap/3.3.6/bootstrap-theme.min.css">
+    <!-- Required Stylesheets -->
+    <link type="text/css" rel="stylesheet" href="/webjars/bootstrap/4.4.1/dist/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="/webjars/bootstrap-vue/2.9.0/dist/bootstrap-vue.min.css"/>
+
+    <!-- Required scripts -->
+    <script src="/webjars/vue/2.6.11/dist/vue.min.js"></script>
+    <script src="/webjars/babel__polyfill/7.8.7/dist//polyfill.min.js"></script>
+    <script src="/webjars/bootstrap-vue/2.9.0/dist/bootstrap-vue.min.js"></script>
+
+    <!-- leaflet -->
+    <link rel="stylesheet" href="/webjars/leaflet/1.6.0/dist/leaflet.css" />
+    <script src="/webjars/leaflet/1.6.0/dist/leaflet.js"></script>
+    <script src="/webjars/vue2-leaflet/2.5.2/dist/vue2-leaflet.min.js"></script>
+
 
     <style>
-            .videowrapper{
-              width: 100%;
-              height : 100%;
+       html, body, #app, .container-fluid, .row, .col {
+        height: 100%;
+        width: : 100%;
+        overflow: hidden;
+        background-color: black;
+        font-family: Tahoma;
+        color: white;
+        /*
+            background: #1E1E1E;
+            color: #f9f9f9;
+            */
+    }
 
-            }
+    .vue2leaflet-map {
+        height: 100% !important;
+        width: : 100%;
+        }
 
     </style>
-
-    <script type="text/javascript">
-
-    $(document).ready(function() {
-
-      $('#pimage').on('load', function(){
-        $('#pimage').attr("width" , $('body').width() * 0.8);
-        $('#pimage').attr("height", $('body').height() *0.8);
-        var ar = "" + $('body').width() + ":" + $('body').height();
-        //alert("changing  aspectRatio : " + ar );
-      });
-
-      $(window).resize(function(){   			
-        $('#pimage').trigger('load');
-          var ar = "" + $('body').width() + ":" + $('body').height();
-          //console.log("changing  aspectRatio : " + ar );
-  			});
-    });
-           
- 
-
-	function load(mediaURL) {
-      
-      $('#pimage').attr("src",mediaURL);
-      $('#pimage').attr("width" , $('body').width());
-      $('#pimage').attr("height", $('body').height());
-      
-	}
-
-
-
-    </script>
 </head>
 
 <body>
-<img id="pimage" />
-</body>
+<!-- Our application root element -->
+<div id="app">
+    <b-container fluid style="margin:0px; padding:0px">
 
+        <!-- photo -->
+        <b-row no-gutters >
+            <b-col>
+                <b-alert variant="success" show>photo</b-alert>
+                <b-img :src="show.photo" style="width:100%; height:100%"/>
+            </b-col>
+        </b-row>
+
+    </b-container>
+</div>
+
+<!-- Start running your app -->
+<script>
+
+
+var data = {
+
+    'name' : '',
+
+    'ui' : '',
+
+    'show' : {
+        'browser': 'https://picsum.photos/900/250/?image=1',
+        'photo'  : 'https://picsum.photos/900/250/?image=2',
+        'video'  : 'https://picsum.photos/900/250/?image=3',
+        'weather': 'https://picsum.photos/900/250/?image=4',
+        'geo'    : 'https://picsum.photos/900/250/?image=5'
+    },
+
+    'resource' : {
+        'browser': {},
+        'photo'  : 'https://picsum.photos/900/250/?image=2',
+        'video'  : {},
+        'weather': {}
+    },
+
+    'weather' : {
+        'lat' : 45.07,
+        'lng': 7.47,
+        'zoom': 13,
+        'conditions' : {}
+    },
+
+    'items' : [
+        {
+          'text': 'Dashboard',
+          'disabled': false,
+          'href': 'breadcrumbs_dashboard',
+        },
+        {
+           'text': 'Link 1',
+          'disabled': false,
+          'href': 'breadcrumbs_link_1',
+        },
+        {
+           'text': 'Link 2',
+          'disabled': true,
+          'href': 'breadcrumbs_link_2',
+        },
+    ]
+};
+
+Vue.component('l-map'       , window.Vue2Leaflet.LMap);
+Vue.component('l-tile-layer', window.Vue2Leaflet.LTileLayer);
+Vue.component('l-marker'    , window.Vue2Leaflet.LMarker);
+
+window.app = new Vue({
+        el: "#app",
+        data: data,
+        /* components: {
+            LMap,
+            LTileLayer,
+            LMarker,
+            LPopup,
+            LTooltip
+        },*/
+        computed: {
+          showAlert : function() {
+            if (this.name.length > 4)
+                return true;
+            return false;
+          },
+          leaftObject : function() {
+            var lft = {
+                  'center'     : L.latLng(data.weather.lat, data.weather.lng),
+                  'zoom'       : data.weather.zoom,
+                  'url'        : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  'attribution': '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+                   'mapOptions': { 'zoomSnap': 0.5}
+            };
+            return lft
+          }
+        },
+        methods : {
+            centerUpdate : function() {
+                console.log( 'center @ : ' + this.$refs.lmap.mapObject.getCenter());
+            },
+            zoomUpdate : function() {}
+        }
+      })
+    </script>
+
+</body>
 </html>

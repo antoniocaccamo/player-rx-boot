@@ -38,6 +38,12 @@ eclipseMavenCentral {
 dependencies {
 	implementation 				'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 				'org.springframework.boot:spring-boot-starter-web'
+
+	compile						"org.webjars.npm:vue:2.6.11"
+	compile						"org.webjars.npm:babel__polyfill:7.8.7"
+	compile                     "org.webjars.npm:bootstrap-vue:2.9.0"
+	compile 					"org.webjars.npm:leaflet:1.6.0"
+	compile						"org.webjars.npm:vue2-leaflet:2.5.2"
 	
 	runtimeOnly                 "com.h2database:h2"
 
@@ -94,9 +100,16 @@ shadowJar {
 }
 
 run.classpath += configurations.developmentOnly
-run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote',
-        '-XstartOnFirstThread', "-Xdock:name=player-rx-boot", "-Xdock:icon=player-rx.ico"
-        )
+
+if ( System.properties['os.name'].toLowerCase().contains('windows') ) {
+	run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
+}
+
+if ( System.properties['os.name'].toLowerCase().contains('mac') ) {
+	run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote',
+			'-XstartOnFirstThread', "-Xdock:name=player-rx-boot", "-Xdock:icon=player-rx.ico"
+	)
+}
 
 tasks.withType(JavaCompile){
     options.encoding = "UTF-8"

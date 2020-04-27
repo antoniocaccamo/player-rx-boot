@@ -51,7 +51,21 @@ public class MonitorUI extends CoatMux {
 
     private void createSubMonitor() {
         // Constants.Resource.Type.BLACK
-        layerMap.putIfAbsent(Constants.Resource.Type.BLACK, addCoat( composite -> {
+//        layerMap.putIfAbsent(Constants.Resource.Type.BLACK, addCoat( composite -> {
+//            Layouts.setGrid(composite)
+//                    .numColumns(1)
+//                    .columnsEqualWidth(true)
+//                    .horizontalSpacing(0)
+//                    .verticalSpacing(0)
+//                    .spacing(0)
+//                    .margin(0)
+//            ;
+//            return new BlackUI(this, composite);
+//
+//        }));
+
+        // Constants.Resource.Type.BLACK
+        layerMap.putIfAbsent(Constants.Resource.Type.BROWSER, addCoat( composite -> {
             Layouts.setGrid(composite)
                     .numColumns(1)
                     .columnsEqualWidth(true)
@@ -60,62 +74,62 @@ public class MonitorUI extends CoatMux {
                     .spacing(0)
                     .margin(0)
             ;
-            return new BlackUI(this, composite);
+            return new BrowserUI(this, composite);
 
         }));
 
         // Constants.Resource.Type.WATCH
-        layerMap.putIfAbsent(Constants.Resource.Type.WATCH, addCoat( composite -> {
-            Layouts.setGrid(composite)
-                    .numColumns(1)
-                    .columnsEqualWidth(true)
-                    .horizontalSpacing(0)
-                    .verticalSpacing(0)
-                    .spacing(0)
-                    .margin(0)
-            ;
-            return new WatchUI(this, composite);
-
-        }));
+//        layerMap.putIfAbsent(Constants.Resource.Type.WATCH, addCoat( composite -> {
+//            Layouts.setGrid(composite)
+//                    .numColumns(1)
+//                    .columnsEqualWidth(true)
+//                    .horizontalSpacing(0)
+//                    .verticalSpacing(0)
+//                    .spacing(0)
+//                    .margin(0)
+//            ;
+//            return new WatchUI(this, composite);
+//
+//        }));
 
         // Constants.Resource.Type.WEATHER
-        layerMap.putIfAbsent(Constants.Resource.Type.WEATHER, addCoat( composite -> {
-            Layouts.setGrid(composite)
-                    .numColumns(1)
-                    .columnsEqualWidth(true)
-                    .horizontalSpacing(0)
-                    .verticalSpacing(0)
-                    .spacing(0)
-                    .margin(0)
-            ;
-            return new WeatherUI(this, composite);
-        }));
+//        layerMap.putIfAbsent(Constants.Resource.Type.WEATHER, addCoat( composite -> {
+//            Layouts.setGrid(composite)
+//                    .numColumns(1)
+//                    .columnsEqualWidth(true)
+//                    .horizontalSpacing(0)
+//                    .verticalSpacing(0)
+//                    .spacing(0)
+//                    .margin(0)
+//            ;
+//            return new WeatherUI(this, composite);
+//        }));
 
         // Constants.Resource.Type.PHOTO
-        layerMap.putIfAbsent(Constants.Resource.Type.PHOTO, addCoat( composite -> {
-            Layouts.setGrid(composite)
-                    .numColumns(1)
-                    .columnsEqualWidth(true)
-                    .horizontalSpacing(0)
-                    .verticalSpacing(0)
-                    .spacing(0)
-                    .margin(0)
-            ;
-            return new PhotoUI(this, composite);
-        }));
+//        layerMap.putIfAbsent(Constants.Resource.Type.PHOTO, addCoat( composite -> {
+//            Layouts.setGrid(composite)
+//                    .numColumns(1)
+//                    .columnsEqualWidth(true)
+//                    .horizontalSpacing(0)
+//                    .verticalSpacing(0)
+//                    .spacing(0)
+//                    .margin(0)
+//            ;
+//            return new PhotoUI(this, composite);
+//        }));
 
         // Constants.Resource.Type.VIDEO
-        layerMap.putIfAbsent(Constants.Resource.Type.VIDEO, addCoat( composite -> {
-            Layouts.setGrid(composite)
-                    .numColumns(1)
-                    .columnsEqualWidth(true)
-                    .horizontalSpacing(0)
-                    .verticalSpacing(0)
-                    .spacing(0)
-                    .margin(0)
-            ;
-            return new VideoUI(this, composite);
-        }));
+//        layerMap.putIfAbsent(Constants.Resource.Type.VIDEO, addCoat( composite -> {
+//            Layouts.setGrid(composite)
+//                    .numColumns(1)
+//                    .columnsEqualWidth(true)
+//                    .horizontalSpacing(0)
+//                    .verticalSpacing(0)
+//                    .spacing(0)
+//                    .margin(0)
+//            ;
+//            return new VideoUI(this, composite);
+//        }));
 
     }
 
@@ -134,7 +148,8 @@ public class MonitorUI extends CoatMux {
 
     public void play( Media media ) {
         log.info("getIndex() [{}] - playing media : {}", getIndex(), media);
-        currenLayer  = this.layerMap.get(  media.getResource().getType() );
+        // currenLayer  = this.layerMap.get(  media.getResource().getType() );
+        currenLayer = currenLayer  == null ? this.layerMap.get(  Constants.Resource.Type.BROWSER ) : currenLayer;
         currenLayer.getHandle().setCurrent(media);
         currenLayer.getHandle().play();
         currenLayer.bringToTop();

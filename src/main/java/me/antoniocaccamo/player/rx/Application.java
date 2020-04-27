@@ -24,7 +24,7 @@ public class Application {
 		beans.sort( (o1, o2) -> o1.compareTo(o2) );
 		beans.stream().forEach(
 				beanName -> {
-					log.info("{}) Bean Name: {} ", counter.incrementAndGet(), beanName);
+					log.debug("{}) Bean Name: {} ", counter.incrementAndGet(), beanName);
 				});
 
 		log.debug("**************** END: Total Bean: {} ******************", CONTEXT.getBeanDefinitionCount());

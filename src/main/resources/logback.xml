@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d [%thread] %-5level %-30F:%-5L - %msg%n</pattern>
-        </encoder>
-    </appender>
+    <property name="LOG_PATH" value="${user.home}/.at/player-rx-boot"/>
+    <property name="LOG_FILE" value="${LOG_PATH}/player-rx-boot.log" />
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>${user.home}/.at/player-rx-boot/logs/player-rx-boot.log</File>
@@ -15,29 +15,14 @@
         </rollingPolicy>
         <encoder>
             <charset>utf-8</charset>
-            <pattern>%d{HH:mm:ss.SSS} [%-15thread] %-5level %-30F:%-5L | %msg%n</pattern>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
         </encoder>
     </appender>
 
     <root level="INFO">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
     </root>
-
+    <logger name="org.springframework.web" level="DEBUG"/>
 </configuration>
 
-        <!--<configuration>-->
-
-        <!--    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">-->
-        <!--        <withJansi>true</withJansi>-->
-        <!--        &lt;!&ndash; encoders are assigned the type-->
-        <!--             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default &ndash;&gt;-->
-        <!--        <encoder>-->
-        <!--            <pattern>%cyan(%d{HH:mm:ss.SSS}) %gray([%thread]) %highlight(%-5level) %magenta(%logger{36}) - %msg%n</pattern>-->
-        <!--        </encoder>-->
-        <!--    </appender>-->
-
-        <!--    <root level="INFO">-->
-        <!--        <appender-ref ref="STDOUT" />-->
-        <!--    </root>-->
-        <!--</configuration>-->

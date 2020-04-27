@@ -5,6 +5,7 @@ spring:
     res-library-file: res-library-file.yaml
     legacy-pref-file: prefs.properties
     resource-prefix-path: ${user.home}/.at/player-rx-boot/resources
+
   main:
     banner-mode: "console"
     lazy-initialization: false
@@ -25,7 +26,7 @@ spring:
         show_sql: true
   
   resources:
-    static-location:classpath:/static, file:/${user.home}/.at/player-rx-boot/resources
+    static-locations : classpath:/static, file:///${user.home}/.at/player-rx-boot
   
   h2:
     console:

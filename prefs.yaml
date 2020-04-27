@@ -5,8 +5,8 @@ size:
   width: 616
   height: 669
 location:
-  x: 154
-  y: 765
+  x: 134
+  y: 741
 sendAllEmail: null
 weatherLatlng: "45.08,7.40"
 screens:
