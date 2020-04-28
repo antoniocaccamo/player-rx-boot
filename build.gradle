@@ -1,15 +1,15 @@
 plugins {
-	id 'org.springframework.boot' 					version '2.2.6.RELEASE'
-	id 'io.spring.dependency-management' 			version '1.0.9.RELEASE'
+	id "org.springframework.boot" 					version "2.2.6.RELEASE"
+	id "io.spring.dependency-management" 			version "1.0.9.RELEASE"
 	id "com.github.johnrengelman.shadow"            version "5.2.0"
 	id "com.diffplug.gradle.eclipse.mavencentral"   version "3.21.0"
 	id "application"
-	id 'java'
+	id "java"
 }
 
-group = 'me.antoniocaccamo.digitalsignage'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+group = "me.antoniocaccamo.digitalsignage"
+version = "0.0.1-SNAPSHOT"
+sourceCompatibility = "1.8"
 
 configurations {
 	developmentOnly
@@ -26,41 +26,42 @@ repositories {
 }
 
 
-apply plugin: 'com.diffplug.gradle.eclipse.mavencentral'
+apply plugin: "com.diffplug.gradle.eclipse.mavencentral"
 eclipseMavenCentral {
 	release SWT_VERSION, {
-		implementation 'org.eclipse.swt'
-		implementation 'org.eclipse.jface'
+		implementation "org.eclipse.swt"
+		implementation "org.eclipse.jface"
 		useNativesForRunningPlatform()
 	}
 }
 
 dependencies {
-	implementation 				'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 				'org.springframework.boot:spring-boot-starter-web'
+	implementation 				"org.springframework.boot:spring-boot-starter-data-jpa"
+	implementation 				"org.springframework.boot:spring-boot-starter-web"
 
 	compile						"org.webjars.npm:vue:2.6.11"
 	compile						"org.webjars.npm:babel__polyfill:7.8.7"
 	compile                     "org.webjars.npm:bootstrap-vue:2.9.0"
 	compile 					"org.webjars.npm:leaflet:1.6.0"
 	compile						"org.webjars.npm:vue2-leaflet:2.5.2"
+	compile 					"org.webjars.npm:axios:0.19.2"
 	
 	runtimeOnly                 "com.h2database:h2"
 
 	implementation              "ws.schild:jave-core:2.7.3"
-	if ( System.properties['os.name'].toLowerCase().contains('windows') )
-		implementation              "ws.schild:jave-nativebin-win64:2.7.3"
+	if ( System.properties["os.name"].toLowerCase().contains("windows") )
+		implementation          "ws.schild:jave-nativebin-win64:2.7.3"
 
-	if ( System.properties['os.name'].toLowerCase().contains('mac') )
-		implementation              "ws.schild:jave-nativebin-osx64:2.7.3"
+	if ( System.properties["os.name"].toLowerCase().contains("mac") )
+		implementation          "ws.schild:jave-nativebin-osx64:2.7.3"
 
-	if ( System.properties['os.name'].toLowerCase().contains('linux') )
-		implementation              "ws.schild:jave-nativebin-linux64:2.7.3"
+	if ( System.properties["os.name"].toLowerCase().contains("linux") )
+		implementation          "ws.schild:jave-nativebin-linux64:2.7.3"
 
-	implementation              'com.fasterxml.jackson.dataformat:jackson-dataformats-text:2.9.8'
-	implementation              'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.8'
-	implementation              'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.8'
-	implementation              'com.fasterxml.jackson.dataformat:jackson-dataformat-properties:2.8.8'
+	implementation              "com.fasterxml.jackson.dataformat:jackson-dataformats-text:2.9.8"
+	implementation              "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.8"
+	implementation              "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.8"
+	implementation              "com.fasterxml.jackson.dataformat:jackson-dataformat-properties:2.8.8"
 
 	implementation              "org.apache.commons:commons-lang3:3.9"
 
@@ -73,18 +74,18 @@ dependencies {
 	implementation              "com.diffplug.durian:durian-collect:$VER_DURIAN"
 	implementation              "com.diffplug.durian:durian-concurrent:$VER_DURIAN"
 
-	compileOnly 'org.projectlombok:lombok'
-//	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	compileOnly "org.projectlombok:lombok"
+//	developmentOnly "org.springframework.boot:spring-boot-devtools"
 
-	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor "org.projectlombok:lombok"
 
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	testImplementation("org.springframework.boot:spring-boot-starter-test") {
+		exclude group: "org.junit.vintage", module: "junit-vintage-engine"
 	}
 
-	testCompileOnly 'org.projectlombok:lombok'
+	testCompileOnly "org.projectlombok:lombok"
 
-	testAnnotationProcessor 'org.projectlombok:lombok'
+	testAnnotationProcessor "org.projectlombok:lombok"
 }
 
 test.classpath += configurations.developmentOnly
@@ -101,17 +102,17 @@ shadowJar {
 
 run.classpath += configurations.developmentOnly
 
-if ( System.properties['os.name'].toLowerCase().contains('windows') ) {
-	run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
+if ( System.properties["os.name"].toLowerCase().contains("windows") ) {
+	run.jvmArgs("-noverify", "-XX:TieredStopAtLevel=1", "-Dcom.sun.management.jmxremote")
 }
 
-if ( System.properties['os.name'].toLowerCase().contains('mac') ) {
-	run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote',
-			'-XstartOnFirstThread', "-Xdock:name=player-rx-boot", "-Xdock:icon=player-rx.ico"
+if ( System.properties["os.name"].toLowerCase().contains("mac") ) {
+	run.jvmArgs("-noverify", "-XX:TieredStopAtLevel=1", "-Dcom.sun.management.jmxremote",
+			"-XstartOnFirstThread", "-Xdock:name=player-rx-boot", "-Xdock:icon=player-rx.ico"
 	)
 }
 
 tasks.withType(JavaCompile){
     options.encoding = "UTF-8"
-    options.compilerArgs.add('-parameters')
+    options.compilerArgs.add("-parameters")
 }
