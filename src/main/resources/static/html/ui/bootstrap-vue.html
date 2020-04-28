@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <title>My first Bootstrap-Vue app</title>
+
+    <!-- Add this to <head> -->
+
+    <!-- Load required Bootstrap and BootstrapVue CSS -->
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+
+    <!-- Load polyfills to support older browsers -->
+    <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script>
+
+    <!-- Load Vue followed by BootstrapVue -->
+    <script src="//unpkg.com/vue@latest/dist/vue.min.js"></script>
+    <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+
+    <!-- Load the following for BootstrapVueIcons support -->
+    <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <style>
+
+      html, body, #app, .container-fluid {
+        height: 100%;
+        width: : 100%;
+        overflow: hidden;
+        background-color: black;
+        font-family: Tahoma;
+        color: white;
+        /*
+            background: #1E1E1E;
+            color: #f9f9f9;
+        */
+        }
+
+        .col {
+          height: 100%;
+          width: : 100%;
+        }
+
+    </style>
+  </head>
+
+  <body>
+    <!-- Our application root element -->
+    <div id="app">
+
+      <b-container fluid style="margin:0px; padding:0px" class="bv-example-row">
+
+        <b-row no-gutters v-if="data.weather.conditions">
+
+          <b-col>
+            <b-img :src="show.browser" style="width:100%; height:100%"></b-img>
+          </b-col>
+
+        </b-row>
+
+        <b-row no-gutters style="height: 100%;">
+
+          <b-col>
+
+            <b-row no-gutters style="height: 100%;">
+
+              <b-col v-for="w in data.weather.conditions.weather" v-bind:key="w.date">
+                <b-img :src=weatherImage(w.hourly[0].weatherIconUrl[0].value.split('/').pop()) fluid-grow ></b-img>
+              </b-col>
+            </b-row>
+
+          </b-col>
+
+
+        </b-row>
+
+      </b-container>
+
+    </div>
+
+
+
+    <!-- Start running your app -->
+    <script>
+
+const data = {
+
+    'name' : '',
+
+    'ui' : '',
+
+    'show' : {
+        'browser': 'https://picsum.photos/900/250/?image=1',
+        'photo'  : 'https://picsum.photos/900/250/?image=2',
+        'video'  : 'https://picsum.photos/900/250/?image=3',
+        'weather': 'https://picsum.photos/900/250/?image=4',
+        'geo'    : 'https://picsum.photos/900/250/?image=5'
+    },
+
+    'resource' : {
+        'browser': {},
+        'photo'  : 'https://picsum.photos/900/250/?image=2',
+        'video'  : {},
+        'weather': {}
+    },
+
+    'weather' : {
+        'lat' : 45.07,
+        'lng': 7.47,
+        'zoom': 13,
+        'conditions' : {}
+    },
+
+    'items' : [
+        {
+          'text': 'Dashboard',
+          'disabled': false,
+          'href': 'breadcrumbs_dashboard',
+        },
+        {
+           'text': 'Link 1',
+          'disabled': false,
+          'href': 'breadcrumbs_link_1',
+        },
+        {
+           'text': 'Link 2',
+          'disabled': true,
+          'href': 'breadcrumbs_link_2',
+        },
+    ]
+};
+
+      window.app = new Vue({
+        el: "#app",
+        data: data,
+        computed: {
+          showAlert : function() {
+            if (this.name.length > 4)
+                return true;
+            return false;            
+          }
+        },
+        mounted : function() {
+          console.log("....");
+          axios.get("weather.json")
+            .then( function(resp) {
+                    data.weather.conditions = resp.data.data;
+                 });
+        },
+        methods : {
+          weatherImage :  function(img) {
+            return '../weather/images/' + img;
+          }
+        }
+      })
+    </script>
+
+  </body>
+</html>
