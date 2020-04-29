@@ -4,7 +4,7 @@ import com.diffplug.common.swt.ColorPool;
 import com.diffplug.common.swt.Layouts;
 import lombok.extern.slf4j.Slf4j;
 import me.antoniocaccamo.player.rx.model.sequence.Media;
-import me.antoniocaccamo.player.rx.timertask.ShowMediaTask;
+import me.antoniocaccamo.player.rx.task.ShowMediaTask;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 

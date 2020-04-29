@@ -1,4 +1,4 @@
-package me.antoniocaccamo.player.rx.timertask;
+package me.antoniocaccamo.player.rx.task;
 
 import lombok.extern.slf4j.Slf4j;
 import me.antoniocaccamo.player.rx.ui.AbstractUI;

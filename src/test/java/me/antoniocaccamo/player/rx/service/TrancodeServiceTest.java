@@ -1,29 +1,24 @@
 package me.antoniocaccamo.player.rx.service;
 
 
+import lombok.extern.slf4j.Slf4j;
+import me.antoniocaccamo.player.rx.config.Constants;
+import me.antoniocaccamo.player.rx.model.resource.LocalResource;
+import me.antoniocaccamo.player.rx.model.resource.Resource;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import ws.schild.jave.*;
+
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Stream;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import lombok.extern.slf4j.Slf4j;
-import me.antoniocaccamo.player.rx.config.Constants;
-import me.antoniocaccamo.player.rx.model.resource.LocalResource;
-import ws.schild.jave.AudioAttributes;
-import ws.schild.jave.Encoder;
-import ws.schild.jave.EncoderException;
-import ws.schild.jave.EncoderProgressListener;
-import ws.schild.jave.EncodingAttributes;
-import ws.schild.jave.MultimediaInfo;
-import ws.schild.jave.MultimediaObject;
-import ws.schild.jave.VideoAttributes;
 
 @SpringBootTest  @Slf4j
 class TrancodeServiceTest  {
@@ -31,8 +26,8 @@ class TrancodeServiceTest  {
     @Value("${spring.application.resource-prefix-path}")
     private String resourcePrefixPath;
 
-//    @Inject
-//    TranscodeService transcodeService;
+    @Autowired
+    TranscodeService transcodeService;
 
     @Test
     public void standalone() throws InterruptedException, IOException, EncoderException {
@@ -48,10 +43,7 @@ class TrancodeServiceTest  {
 //                        ));
 //        Thread.sleep(20000);
 
-        LocalResource localResource = LocalResource.builder()
-                .withType(Constants.Resource.Type.VIDEO)
-                .withPath("src/main/resources/default/videos/at.video.mov")
-                .build();
+        Resource localResource = createResource ();
 
         File source = new File(localResource.getPath());
         LocalDateTime sdt = LocalDateTime.ofInstant(Instant.ofEpochMilli(source.lastModified()), ZoneId.systemDefault());
@@ -80,27 +72,21 @@ class TrancodeServiceTest  {
 
         AudioAttributes audioAttr = new AudioAttributes();
         VideoAttributes videoAttr = new VideoAttributes();
-        EncodingAttributes encodingAttr = new EncodingAttributes();
 
         audioAttr.setChannels(2);
         audioAttr.setCodec("aac");
         audioAttr.setBitRate(128000);
         audioAttr.setSamplingRate(44100);
 
-        encodingAttr.setAudioAttributes(audioAttr);
-
-
-
         videoAttr.setCodec("libx264");
-
         videoAttr.setBitRate(4000000);
         videoAttr.setX264Profile(VideoAttributes.X264_PROFILE.BASELINE);
 
-
-
-
-        encodingAttr.setVideoAttributes(videoAttr);
+        EncodingAttributes encodingAttr = new EncodingAttributes();
         encodingAttr.setFormat("hls");
+        encodingAttr.setAudioAttributes(audioAttr);
+        encodingAttr.setVideoAttributes(videoAttr);
+
 
         log.info("encoding attributes : {}", encodingAttr.toString());
 
@@ -114,11 +100,13 @@ class TrancodeServiceTest  {
             @Override
             public void sourceInfo(MultimediaInfo multimediaInfo) {
                 log.info("multimediaInfo : {}", multimediaInfo);
+
+                log.info("Duration.ofMillis( multimediaInfo.getDuration() : {}", Duration.ofMillis( multimediaInfo.getDuration()));
             }
 
             @Override
             public void progress(int i) {
-                log.info("progress : {}", i);
+                log.info("progress : {} / 1000", i);
             }
 
             @Override
@@ -127,8 +115,20 @@ class TrancodeServiceTest  {
             }
         });
 
+    }
 
+    private static Resource createResource() {
+        return  LocalResource.builder()
+                .withType(Constants.Resource.Type.VIDEO)
+                .withPath("src/main/resources/default/videos/at.video.mov")
+                .build();
+    }
 
+    @Test
+    public void transcode() throws InterruptedException {
+        transcodeService.transcode(createResource());
+
+        Thread.sleep(30* 1000);
 
     }
 }

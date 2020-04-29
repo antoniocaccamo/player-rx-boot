@@ -23,6 +23,10 @@
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
     </root>
+
     <logger name="org.springframework.web" level="DEBUG"/>
+
+    <logger name="ws.schild.jave" level="DEBUG" />
+
 </configuration>
 
