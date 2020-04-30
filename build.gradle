@@ -37,6 +37,7 @@ eclipseMavenCentral {
 
 dependencies {
 	implementation 				"org.springframework.boot:spring-boot-starter-data-jpa"
+	implementation 				"org.springframework.boot:spring-boot-starter-aop"
 	implementation 				"org.springframework.boot:spring-boot-starter-web"
 
 	compile						"org.webjars.npm:vue:2.6.11"
@@ -94,6 +95,11 @@ mainClassName = "me.antoniocaccamo.player.rx.Application"
 
 test {
 	useJUnitPlatform()
+	println "tests on : " + System.properties["os.name"]
+	if ( System.properties["os.name"].toLowerCase().contains("mac") ) {
+		test.jvmArgs  = test.jvmArgs << "-XstartOnFirstThread"
+	}
+	println "test.jvmArgs : " + test.jvmArgs
 }
 
 shadowJar {
@@ -102,15 +108,16 @@ shadowJar {
 
 run.classpath += configurations.developmentOnly
 
-if ( System.properties["os.name"].toLowerCase().contains("windows") ) {
+//if ( System.properties["os.name"].toLowerCase().contains("windows") ) {
 	run.jvmArgs("-noverify", "-XX:TieredStopAtLevel=1", "-Dcom.sun.management.jmxremote")
-}
+//}
 
 if ( System.properties["os.name"].toLowerCase().contains("mac") ) {
-	run.jvmArgs("-noverify", "-XX:TieredStopAtLevel=1", "-Dcom.sun.management.jmxremote",
-			"-XstartOnFirstThread", "-Xdock:name=player-rx-boot", "-Xdock:icon=player-rx.ico"
-	)
+	run.jvmArgs = run.jvmArgs << "-XstartOnFirstThread";
+	run.jvmArgs = run.jvmArgs << "-Xdock:name=player-rx-boot"
+	run.jvmArgs = run.jvmArgs << "-Xdock:icon=player-rx.ico"
 }
+println "run.jvmArgs  : " + run.jvmArgs
 
 tasks.withType(JavaCompile){
     options.encoding = "UTF-8"

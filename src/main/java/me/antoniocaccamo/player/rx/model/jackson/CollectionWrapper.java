@@ -1,6 +1,7 @@
 package me.antoniocaccamo.player.rx.model.jackson;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import me.antoniocaccamo.player.rx.model.resource.Resource;
 
 import java.util.Collection;
@@ -14,7 +15,12 @@ import java.util.Collection;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CollectionWrapper<T> {
+public abstract class CollectionWrapper<T> {
 
-    private Collection<Resource> collection ;
+    private Collection<T> collection ;
+
+    public void clear(){
+        if ( collection != null )
+            collection.clear();
+    }
 }

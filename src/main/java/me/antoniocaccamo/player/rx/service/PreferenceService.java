@@ -1,6 +1,6 @@
 package me.antoniocaccamo.player.rx.service;
 
-import me.antoniocaccamo.player.rx.model.preference.PreferenceModel;
+import me.antoniocaccamo.player.rx.model.preference.Preference;
 
 import java.io.IOException;
 
@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public interface PreferenceService {
 
-    PreferenceModel read() ;
+    Preference read() ;
 
     void save() throws IOException;
 

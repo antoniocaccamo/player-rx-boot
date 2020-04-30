@@ -1,14 +1,16 @@
 ---
-uuid: "dc44beac-7d5e-4e97-a065-a7cba61a606e"
 computer: "antonio"
 size:
   width: 616
   height: 669
 location:
   x: 160
-  y: 1082
+  y: 824
 sendAllEmail: null
 weatherLatlng: "45.08,7.40"
+loadedSequences:
+- name: "DEFAULT_SEQUENCE"
+  path: "file:///D:/development/workspaces/antoniocaccamo/player-rx-boot/DEFAULT_SEQUENCE.yaml"
 screens:
 - defaultScreen: null
   size:

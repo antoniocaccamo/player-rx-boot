@@ -1,18 +1,63 @@
 ---
 collection:
 - !<local>
-  id: 3
+  id: null
   type: "VIDEO"
   path: "default/videos/at.video.mov"
-  duration: 12.000000000
+  duration: null
+- !<local>
+  id: null
+  type: "PHOTO"
+  path: "C:\\Users\\Public\\Pictures\\Sample Pictures\\Koala.jpg"
+  duration: null
+- !<local>
+  id: null
+  type: "PHOTO"
+  path: "C:\\Users\\Public\\Pictures\\Sample Pictures\\Desert.jpg"
+  duration: null
 - !<remote>
-  id: 4
+  id: null
   type: "WEATHER"
   path: null
-  duration: 8.000000000
+  duration: null
   remote: null
 - !<local>
-  id: 1
+  id: null
+  type: "PHOTO"
+  path: "C:\\Users\\Public\\Pictures\\Sample Pictures\\Lighthouse.jpg"
+  duration: null
+- !<local>
+  id: null
+  type: "PHOTO"
+  path: "C:\\Users\\Public\\Pictures\\Sample Pictures\\Jellyfish.jpg"
+  duration: null
+- !<local>
+  id: null
+  type: "PHOTO"
+  path: "C:\\Users\\Public\\Pictures\\Sample Pictures\\Chrysanthemum.jpg"
+  duration: null
+- !<local>
+  id: null
+  type: "PHOTO"
+  path: "C:\\Users\\Public\\Pictures\\Sample Pictures\\Tulips.jpg"
+  duration: null
+- !<local>
+  id: null
   type: "PHOTO"
   path: "default/images/at.image.jpg"
-  duration: 5.000000000
+  duration: null
+- !<local>
+  id: null
+  type: "PHOTO"
+  path: "C:\\Users\\Public\\Pictures\\Sample Pictures\\Hydrangeas.jpg"
+  duration: null
+- !<local>
+  id: null
+  type: "PHOTO"
+  path: "C:\\Users\\Public\\Pictures\\Sample Pictures\\Penguins.jpg"
+  duration: null
+- !<local>
+  id: null
+  type: "VIDEO"
+  path: "C:\\Users\\Public\\Videos\\Sample Videos\\Wildlife.wmv"
+  duration: 30.000000000

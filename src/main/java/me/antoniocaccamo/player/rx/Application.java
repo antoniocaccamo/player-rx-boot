@@ -8,6 +8,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 @SpringBootApplication @Slf4j
 public class Application {
@@ -18,6 +19,12 @@ public class Application {
 	public static void main(String[] args) {
 		CONTEXT = SpringApplication.run(Application.class, args);
 		final AtomicInteger counter = new AtomicInteger(0);
+
+		log.info("arguments : ");
+		Stream.of(args).forEach(
+				s -> log.info("\t{}", s)
+		);
+
 		log.debug("**************** START: Total Bean Objects: {} ******************", CONTEXT.getBeanDefinitionCount());
 
 		List<String> beans =Arrays.asList(CONTEXT.getBeanDefinitionNames());

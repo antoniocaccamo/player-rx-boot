@@ -1,6 +1,7 @@
 package me.antoniocaccamo.player.rx.model.sequence;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -92,8 +93,10 @@ public class Media implements Playable, Cloneable{
     @JsonDeserialize(using = LocalTimeDeserializer.class)
     private LocalTime to;
 
-    @ManyToOne
-    @JoinColumn(name="RESOURCE_ID")
+    @Column(name = "RESOURCE_HASH") @JsonProperty("resource-hash")
+    private String resourceHash;
+
+    @Transient @JsonIgnore
     private Resource resource;
 
     public Long getId() {
@@ -137,7 +140,7 @@ public class Media implements Playable, Cloneable{
     }
 
     public Duration getDuration() {
-        return duration == null ? resource.getDuration() : duration;
+        return duration == null ? ( resource != null ? resource.getDuration() : null ): duration;
     }
 
     public LocalDate getStart() {
@@ -182,8 +185,16 @@ public class Media implements Playable, Cloneable{
 
     public void setDuration(Duration duration) {
         this.duration = duration;
-        if ( getResource().isVideo())
+        if ( getResource() != null &&  getResource().isVideo())
             getResource().setDuration(duration);
+    }
+
+    public String getResourceHash() {
+        return resourceHash;
+    }
+
+    public void setResourceHash(String resourceHash) {
+        this.resourceHash = resourceHash;
     }
 
     public Resource getResource() {
