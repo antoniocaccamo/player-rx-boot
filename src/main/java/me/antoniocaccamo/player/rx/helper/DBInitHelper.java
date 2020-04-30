@@ -43,8 +43,8 @@ public class DBInitHelper {
 
         Sequence sequence = null;
 
-        sequence = sequenceService.getSequenceByName(Constants.DefaultSequenceName)
-                .orElseGet(() -> createDefaultSequence() )
+        sequence = sequenceService.getSequenceByName(Constants.Sequence.DefaultSequenceName)
+                .orElseGet(() -> Constants.Sequence.DEFAULT_SEQUENCE )
         ;
 
         return sequence;
@@ -57,7 +57,7 @@ public class DBInitHelper {
 
         Sequence sequence = null;
         try {
-        sequence = Constants.DEFAULT_SEQUENCE();
+        sequence = Constants.Sequence.DEFAULT_SEQUENCE;
         sequence.getMedias()
                 .stream()
                 .forEach(media -> {

@@ -6,12 +6,11 @@ import com.diffplug.common.swt.jface.ImageDescriptors;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 import lombok.extern.slf4j.Slf4j;
-import me.antoniocaccamo.player.rx.Application;
 import me.antoniocaccamo.player.rx.config.Constants;
 import me.antoniocaccamo.player.rx.helper.DBInitHelper;
 import me.antoniocaccamo.player.rx.helper.LocaleHelper;
 import me.antoniocaccamo.player.rx.helper.SWTHelper;
-import me.antoniocaccamo.player.rx.model.preference.PreferenceModel;
+import me.antoniocaccamo.player.rx.model.preference.Preference;
 import me.antoniocaccamo.player.rx.model.preference.Screen;
 import me.antoniocaccamo.player.rx.model.preference.ScreenLocation;
 import me.antoniocaccamo.player.rx.model.preference.ScreenSize;
@@ -59,7 +58,7 @@ public class ApplicationUI {
     @Autowired
     private DBInitHelper dbInitHelper;
 
-    private PreferenceModel preference;
+    private Preference preference;
 
     private PublishSubject<Screen> monitorPublishSubject;
 
@@ -179,7 +178,7 @@ public class ApplicationUI {
                                     .defaultScreen(Constants.Screen.DefaultEnum.N)
                                     .size( ScreenSize.builder().width(Constants.Screen.WIDTH).height(Constants.Screen.HEIGHT).build())
                                     .location(ScreenLocation.builder().top(Constants.Screen.TOP).left(Constants.Screen.LEFT).build() )
-                                    .sequence(Constants.DefaultSequenceName)
+                                    .sequence(Constants.Sequence.DefaultSequenceName)
                                     .timing(Constants.TimingEnum.ALL_DAY)
                                     .build()
                             , tabFolderIndex.getAndIncrement());

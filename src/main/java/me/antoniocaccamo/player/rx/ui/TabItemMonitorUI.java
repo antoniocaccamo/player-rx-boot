@@ -15,6 +15,7 @@ import me.antoniocaccamo.player.rx.event.media.progress.EndedProgressMediaEvent;
 import me.antoniocaccamo.player.rx.event.media.progress.MediaEvent;
 import me.antoniocaccamo.player.rx.event.media.progress.PercentageProgressMediaEvent;
 import me.antoniocaccamo.player.rx.helper.LocaleHelper;
+import me.antoniocaccamo.player.rx.model.preference.LoadedSequence;
 import me.antoniocaccamo.player.rx.model.preference.Screen;
 import me.antoniocaccamo.player.rx.model.resource.LocalResource;
 import me.antoniocaccamo.player.rx.model.sequence.Media;
@@ -136,12 +137,12 @@ public class TabItemMonitorUI extends CTabItem {
 
         log.info("getIndex() [{}] - applyMonitorModel : {}" , getIndex(), getMonitorModel() );
 
-        ImmutableList<Sequence> values = ImmutableList.copyOf(sequenceService.getLoadedSequences());
+        ImmutableList<LoadedSequence> values = ImmutableList.copyOf(sequenceService.getLoadedSequences());
         values.stream().forEach(sq -> sequenceCombo.add(sq.getName()));
 
-        SwtRx.combo(sequenceCombo,values, Sequence::getName)
+        SwtRx.combo(sequenceCombo,values, LoadedSequence::getName)
                 .asObservable()
-                .subscribe( sq-> sequenceLooper.setOptionalSequence(Optional.ofNullable(sq)))
+                .subscribe( ls-> sequenceLooper.setOptionalSequence(Optional.ofNullable(ls.getSequence())))
         ;
 
         createObservers();

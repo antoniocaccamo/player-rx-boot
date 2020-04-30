@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence
+    xmlns="http://sequencemovieplayer.antanysavage.it/sequences/schema" name="test">
+    <videos>
+        <video id="1"
+            path="C:\Users\Public\Pictures\Sample Pictures\Chrysanthemum.jpg"
+            duration="5.0" daysOfWeek="1111111" limited="0" group="" type="Photo"/>
+        <video id="2"
+            path="C:\Users\Public\Pictures\Sample Pictures\Desert.jpg"
+            duration="5.0" daysOfWeek="1111111" limited="0" group="" type="Photo"/>
+        <video id="3"
+            path="C:\Users\Public\Pictures\Sample Pictures\Hydrangeas.jpg"
+            duration="5.0" daysOfWeek="1111111" limited="0" group="" type="Photo"/>
+        <video id="4"
+            path="C:\Users\Public\Pictures\Sample Pictures\Jellyfish.jpg"
+            duration="5.0" daysOfWeek="1111111" limited="0" group="" type="Photo"/>
+        <video id="5"
+            path="C:\Users\Public\Videos\Sample Videos\Wildlife.wmv"
+            duration="30.09" daysOfWeek="1111111" limited="0" group="" type="Video"/>
+        <video id="6"
+            path="C:\Users\Public\Pictures\Sample Pictures\Koala.jpg"
+            duration="5.0" daysOfWeek="1111111" limited="0" group="" type="Photo"/>
+        <video id="7"
+            path="C:\Users\Public\Pictures\Sample Pictures\Lighthouse.jpg"
+            duration="5.0" daysOfWeek="1111111" limited="0" group="" type="Photo"/>
+        <video id="8"
+            path="C:\Users\Public\Pictures\Sample Pictures\Penguins.jpg"
+            duration="5.0" daysOfWeek="1111111" limited="0" group="" type="Photo"/>
+        <video id="9"
+            path="C:\Users\Public\Pictures\Sample Pictures\Tulips.jpg"
+            duration="5.0" daysOfWeek="1111111" limited="0" group="" type="Photo"/>
+    </videos>
+</sequence>

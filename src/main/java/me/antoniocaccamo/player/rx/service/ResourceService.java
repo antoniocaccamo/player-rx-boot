@@ -12,7 +12,7 @@ public interface ResourceService {
 
     Iterable<Resource> getResources();
 
-    Optional<Resource> getResourceByHash(Resource resource);
+    Optional<Resource> getResourceByHash(String resourceHash);
 
     void save(Resource resource);
 }

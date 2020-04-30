@@ -1,6 +1,7 @@
 package me.antoniocaccamo.player.rx.service;
 
 import me.antoniocaccamo.player.rx.model.Model;
+import me.antoniocaccamo.player.rx.model.preference.LoadedSequence;
 import me.antoniocaccamo.player.rx.model.sequence.Sequence;
 
 import java.io.IOException;
@@ -14,11 +15,14 @@ public interface SequenceService {
 
     Optional<Sequence> read(Model.Location location, Path path);
 
+    Sequence save(LoadedSequence loadedSequence) throws IOException;
     Sequence save(Sequence sequence, Path path) throws IOException;
 
-    Optional<Sequence> getSequenceByName(String seqeunceName);
+    Optional<Sequence> getSequenceByName(String sequenceName);
 
-    Collection<Sequence> getLoadedSequences();
+    Collection<LoadedSequence> getLoadedSequences();
+
+    void addLoadedSequence(LoadedSequence loadedSequence);
 
     //Sequence dummy();
 }

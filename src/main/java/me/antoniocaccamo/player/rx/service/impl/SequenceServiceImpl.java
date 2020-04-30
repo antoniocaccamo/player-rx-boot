@@ -6,6 +6,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.extern.slf4j.Slf4j;
 import me.antoniocaccamo.player.rx.model.Model;
+import me.antoniocaccamo.player.rx.model.preference.LoadedSequence;
 import me.antoniocaccamo.player.rx.model.sequence.Sequence;
 import me.antoniocaccamo.player.rx.model.resource.Resource;
 import me.antoniocaccamo.player.rx.repository.SequenceRepository;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PreDestroy;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -26,21 +28,21 @@ import java.util.Optional;
 @Slf4j
 public class SequenceServiceImpl implements SequenceService {
 
-    private final Cache<String, Sequence> sequenceCache = CacheBuilder.newBuilder()
+    private final Cache<String, LoadedSequence> sequenceCache = CacheBuilder.newBuilder()
             .recordStats()
             .build()
             ;
 
     private final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
-    @Autowired
-    private SequenceRepository sequenceRepository;
+//    @Autowired
+//    private SequenceRepository sequenceRepository;
 
     @Autowired
     private ResourceService resourceService;
 
-    @Autowired
-    private MediaService mediaService;
+//    @Autowired
+//    private MediaService mediaService;
 
     @Autowired
     private TranscodeService transcodeService;
@@ -72,20 +74,29 @@ public class SequenceServiceImpl implements SequenceService {
 
     @Override
     public Sequence save(Sequence sequence, Path path) throws IOException {
-        sequence.getMedias()
-                .stream()
-                .forEach(media -> {
-                    Resource resource = media.getResource();
-                    resourceService.save(resource);
-                    //media.setResource(resource);
-                    mediaService.save(media);
-                });
-        sequenceRepository.save(sequence);
-        sequenceCache.put(sequence.getName(), sequence);
-//        return sequence;
-        log.info("saving seguence {} to file : {}", sequence, path);
-        path.toFile().mkdirs();
-        mapper.writerWithDefaultPrettyPrinter().writeValue(path.toFile(), sequence);
+//        sequence.getMedias()
+//                .stream()
+//                .forEach(media -> {
+//                    Resource resource = media.getResource();
+//                    resourceService.save(resource);
+//                    //media.setResource(resource);
+//                    mediaService.save(media);
+//                });
+//        sequenceRepository.save(sequence);
+//        sequenceCache.put(sequence.getName(), sequence);
+////        return sequence;
+        File file = path.toFile().getAbsoluteFile();
+        log.info("saving seguence {} to file : {}", sequence.getName(), file.getAbsolutePath());
+        if ( ! file.getParentFile().exists() ) {
+            log.info(" crating dirs {} - result {}", file.getParentFile().getAbsolutePath(),
+            file.getParentFile().mkdirs());
+        }
+        if ( ! file.exists() ) {
+            log.info("creating file {} - result {}",
+            file.getAbsolutePath(),
+            file.createNewFile());
+        }
+        mapper.writerWithDefaultPrettyPrinter().writeValue(file, sequence);
         return sequence;
     }
 
@@ -99,13 +110,14 @@ public class SequenceServiceImpl implements SequenceService {
 //        optionalSequence = sequenceMap.get(sequenceName);
 
 
-        log.warn("optionalSequence by name : {}", sequenceName);
-        optionalSequence = Optional.ofNullable(sequenceCache.getIfPresent(sequenceName));
+        log.warn("sequence by name : {}", sequenceName);
+        /*
+        optionalSequence = Optional.ofNullable(sequenceCache.getIfPresent(sequenceName).getSequence());
         if ( ! optionalSequence.isPresent() ) {
             optionalSequence = sequenceRepository.findByName(sequenceName);
             optionalSequence.ifPresent( sq-> {
                     sq.getMedias().stream()
-                            .forEach(media ->  resourceService.getResourceByHash(media.getResource()).ifPresent(resource -> media.setResource(resource)));
+                            .forEach(media ->  resourceService.getResourceByHash(media.getResourceHash()).ifPresent(media::setResource));
                     sequenceCache.put(sequenceName,sq);
                 }
             );
@@ -118,10 +130,27 @@ public class SequenceServiceImpl implements SequenceService {
 
         );
         return optionalSequence;
+        */
+        Optional<LoadedSequence> osl = Optional.ofNullable(sequenceCache.getIfPresent(sequenceName));
+        if (osl.isPresent()){
+            return Optional.of(osl.get().getSequence());
+        }
+
+        return optionalSequence;
     }
 
     @Override
-    public Collection<Sequence> getLoadedSequences() {
+    public Sequence save(LoadedSequence loadedSequence) throws IOException {
+        return save(loadedSequence.getSequence(), loadedSequence.getPath());
+    }
+
+    @Override
+    public void addLoadedSequence(LoadedSequence loadedSequence){
+        sequenceCache.put(loadedSequence.getName(), loadedSequence);
+    }
+
+    @Override
+    public Collection<LoadedSequence> getLoadedSequences() {
         return sequenceCache.asMap().values();
     }
 

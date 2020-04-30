@@ -11,6 +11,6 @@ import lombok.Setter;
 public class LegacyPrefsContainer {
 
     @JsonProperty("app")
-    private PreferenceModel preferenceModel;
+    private Preference preference;
 
 }

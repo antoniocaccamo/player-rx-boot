@@ -1,6 +1,6 @@
 package me.antoniocaccamo.player.rx.service;
 
-import me.antoniocaccamo.player.rx.model.preference.PreferenceModel;
+import me.antoniocaccamo.player.rx.model.preference.Preference;
 import me.antoniocaccamo.player.rx.model.sequence.Sequence;
 
 import java.io.IOException;
@@ -11,9 +11,10 @@ import java.util.Optional;
  */
 public interface LegacyService {
 
-    PreferenceModel loadPreferenceModel() throws IOException;
+    Preference loadLegacyPreference() throws IOException;
 
-    Optional<Sequence> readSequence(String path);
+
+    Optional<Sequence> readLeagacySequence(String path);
 
 }
 

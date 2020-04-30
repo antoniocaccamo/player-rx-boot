@@ -49,7 +49,7 @@ public class ResourceServiceTest {
         assertTrue(file.exists(), String.format("file not found : %s", file.getAbsoluteFile()));
 
         Optional<Sequence> sequence =
-                legacyService.readSequence(file.getAbsolutePath())
+                legacyService.readLeagacySequence(file.getAbsolutePath())
                 ;
         assertNotNull(sequence.get());
         Sequence sq = sequence.get();
@@ -72,9 +72,10 @@ public class ResourceServiceTest {
 
         sq.getMedias().stream().forEach(media -> resourceCache.put(media.getResource().getHash(),media.getResource()));
 
-        ResourceCollectionWrapprer wrapper = new ResourceCollectionWrapprer();
-
-        wrapper.setCollection(resourceCache.asMap().values());
+        ResourceCollectionWrapprer wrapper =  ResourceCollectionWrapprer
+                .builder()
+                .collection(resourceCache.asMap().values())
+                .build();
 
         mapper.writerWithDefaultPrettyPrinter().writeValue( this.resLibraryFile, wrapper);
 
