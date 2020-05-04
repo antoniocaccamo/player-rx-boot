@@ -54,9 +54,9 @@ public class HLSTrancodeServiceImpl implements TranscodeService {
         Function<Resource, Resource> ffmpgeHlsFunction = new FfmpgeHlsFunction(resourcePrefixPath);
         
         resourceDisposable = resourcePublishSubject
-                //.subscribeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.computation())
                 .map( ffmpgeHlsFunction )
-                //.observeOn(  SwtExec.async().getRxExecutor().scheduler())        
+                .observeOn(  SwtExec.async().getRxExecutor().scheduler())        
                 .subscribe( 
                         resource -> log.info("transcoded : {}", resource), 
                         throwable-> log.error("error occurred", throwable)

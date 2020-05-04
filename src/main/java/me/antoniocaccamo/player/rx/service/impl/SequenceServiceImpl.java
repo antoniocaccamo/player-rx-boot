@@ -183,6 +183,23 @@ public class SequenceServiceImpl implements SequenceService {
         }
 
         return optionalSequence;
+        */
+        Optional<LoadedSequence> osl = Optional.ofNullable(sequenceCache.getIfPresent(sequenceName));
+        if (osl.isPresent()){
+            return Optional.of(osl.get().getSequence());
+        }
+
+        return optionalSequence;
+    }
+
+    @Override
+    public Sequence save(LoadedSequence loadedSequence) throws IOException {
+        return save(loadedSequence.getSequence(), loadedSequence.getPath());
+    }
+
+    @Override
+    public void addLoadedSequence(LoadedSequence loadedSequence){
+        sequenceCache.put(loadedSequence.getName(), loadedSequence);
     }
 
     @Override

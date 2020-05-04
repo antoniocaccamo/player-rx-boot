@@ -26,6 +26,7 @@ public interface SequenceService {
 
     Optional<Sequence> read(Model.Location location, Path path);
 
+    Sequence save(LoadedSequence loadedSequence) throws IOException;
     Sequence save(Sequence sequence, Path path) throws IOException;
 
 }
