@@ -34,12 +34,12 @@ collection:
 - !<local>
   id: null
   type: "PHOTO"
-  path: "C:\\Users\\Public\\Pictures\\Sample Pictures\\Chrysanthemum.jpg"
+  path: "C:\\Users\\Public\\Pictures\\Sample Pictures\\Tulips.jpg"
   duration: null
 - !<local>
   id: null
   type: "PHOTO"
-  path: "C:\\Users\\Public\\Pictures\\Sample Pictures\\Tulips.jpg"
+  path: "C:\\Users\\Public\\Pictures\\Sample Pictures\\Chrysanthemum.jpg"
   duration: null
 - !<local>
   id: null
@@ -49,12 +49,12 @@ collection:
 - !<local>
   id: null
   type: "PHOTO"
-  path: "C:\\Users\\Public\\Pictures\\Sample Pictures\\Hydrangeas.jpg"
+  path: "C:\\Users\\Public\\Pictures\\Sample Pictures\\Penguins.jpg"
   duration: null
 - !<local>
   id: null
   type: "PHOTO"
-  path: "C:\\Users\\Public\\Pictures\\Sample Pictures\\Penguins.jpg"
+  path: "C:\\Users\\Public\\Pictures\\Sample Pictures\\Hydrangeas.jpg"
   duration: null
 - !<local>
   id: null

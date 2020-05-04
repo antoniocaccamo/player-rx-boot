@@ -7,6 +7,7 @@ import me.antoniocaccamo.player.rx.model.preference.Preference;
 import me.antoniocaccamo.player.rx.service.LegacyService;
 import me.antoniocaccamo.player.rx.service.PreferenceService;
 import me.antoniocaccamo.player.rx.service.ResourceService;
+import me.antoniocaccamo.player.rx.service.SequenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,9 @@ public class PreferenceServiceImpl implements PreferenceService {
     @Autowired
     private LegacyService legacyPreferenceService;
 
+    @Autowired
+    private SequenceService sequenceService;
+
     @Value("${spring.application.pref-file}") @NotNull
     private File prefFile;
 
@@ -47,6 +51,8 @@ public class PreferenceServiceImpl implements PreferenceService {
         } else {
             preferenceModel = mapper.readValue(prefFile, Preference.class);
         }
+        preferenceModel.getLoadedSequences().stream()
+                .forEach(loadedSequence -> sequenceService.loadFromSource(loadedSequence));
     }
 
     @Override

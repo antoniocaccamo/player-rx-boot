@@ -7,6 +7,7 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 import lombok.extern.slf4j.Slf4j;
 import me.antoniocaccamo.player.rx.config.Constants;
+import me.antoniocaccamo.player.rx.event.application.ApplicationEvent;
 import me.antoniocaccamo.player.rx.helper.InitHelper;
 import me.antoniocaccamo.player.rx.helper.LocaleHelper;
 import me.antoniocaccamo.player.rx.helper.SWTHelper;
@@ -15,7 +16,7 @@ import me.antoniocaccamo.player.rx.model.preference.Screen;
 import me.antoniocaccamo.player.rx.model.preference.ScreenLocation;
 import me.antoniocaccamo.player.rx.model.preference.ScreenSize;
 import me.antoniocaccamo.player.rx.service.PreferenceService;
-import me.antoniocaccamo.player.rx.ui.ResourceLibraryUI;
+import me.antoniocaccamo.player.rx.ui.LibraryUI;
 import me.antoniocaccamo.player.rx.ui.TabItemMonitorUI;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.MenuManager;
@@ -60,7 +61,7 @@ public class ApplicationUI {
 
     private Preference preference;
 
-    private PublishSubject<Screen> monitorPublishSubject;
+    private PublishSubject<ApplicationEvent> applicationEventPublishSubject;
 
     private CTabFolder tabFolder;
 
@@ -78,7 +79,7 @@ public class ApplicationUI {
 
         dbInitHelper.getDefaultSquence();
         preference = preferenceService.read();
-        monitorPublishSubject = PublishSubject.create();
+        applicationEventPublishSubject = PublishSubject.create();
 
         log.info("launching swt");
 
@@ -109,7 +110,7 @@ public class ApplicationUI {
 
             resourceLibraryLayer = coatMux.addCoat(cmpResLib ->{
                 Layouts.setGrid(cmpResLib).horizontalSpacing(0).verticalSpacing(0);
-                Layouts.setGridData(new ResourceLibraryUI(cmpResLib)).grabAll();
+                Layouts.setGridData(new LibraryUI(cmpResLib)).grabAll();
                 return cmpResLib;
             });
 
@@ -204,7 +205,7 @@ public class ApplicationUI {
                 .build()
                 ;
 
-        monitorPublishSubject.count()
+        applicationEventPublishSubject.count()
                 .subscribe( cnt -> removeMonitor.setEnabled( Boolean.valueOf(cnt > 1)));
 
         manager.add(addMonitor);

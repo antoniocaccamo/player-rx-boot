@@ -14,19 +14,18 @@ public interface SequenceService {
 
     Optional<LoadedSequence> getLoadedSequenceByName(String sequenceName);
 
-    Optional<LoadedSequence> loadFromSource(LoadedSequence loadedSequence) throws IOException;
+    Optional<LoadedSequence> loadFromSource(LoadedSequence loadedSequence);
 
     Optional<LoadedSequence> add(LoadedSequence loadedSequence);
 
     LoadedSequence save(LoadedSequence loadedSequence) throws IOException;
 
-    /* @TODO :  remove below */
+    /* TODO :  remove below */
 
     Optional<Sequence> read( Path path);
 
     Optional<Sequence> read(Model.Location location, Path path);
 
-    Sequence save(LoadedSequence loadedSequence) throws IOException;
-    Sequence save(Sequence sequence, Path path) throws IOException;
+    LoadedSequence save(Sequence sequence, Path path) throws IOException;
 
 }

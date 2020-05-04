@@ -5,8 +5,8 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import me.antoniocaccamo.player.rx.config.Constants;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+//import javax.persistence.DiscriminatorValue;
+//import javax.persistence.Entity;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,7 +17,7 @@ import java.time.Duration;
  */
 @Getter @Slf4j
 @Setter
-@Entity @DiscriminatorValue(Constants.Resource.Location.Local)
+//@Entity @DiscriminatorValue(Constants.Resource.Location.Local)
 public class LocalResource extends Resource {
 
     @Override

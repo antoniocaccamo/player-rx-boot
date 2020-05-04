@@ -13,7 +13,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import javax.persistence.*;
+//import javax.persistence.*;
 import java.nio.file.Path;
 import java.time.Duration;
 
@@ -21,9 +21,9 @@ import java.time.Duration;
  * @author antoniocaccamo on 18/02/2020
  */
 @Getter @Setter
-@Inheritance @DiscriminatorColumn(name = "LOCATION")
-@Entity
-@Table(name = "RESOURCE")
+//@Inheritance @DiscriminatorColumn(name = "LOCATION")
+//@Entity
+//@Table(name = "RESOURCE")
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         property = "resource-type"
@@ -34,21 +34,21 @@ import java.time.Duration;
 })
 public abstract class Resource {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="RESOURCE_SEQ")
-    @SequenceGenerator(name="RESOURCE_SEQ", sequenceName="RESOURCE_SEQ", allocationSize=1)
+ //   @Id
+ //   @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="RESOURCE_SEQ")
+ //   @SequenceGenerator(name="RESOURCE_SEQ", sequenceName="RESOURCE_SEQ", allocationSize=1)
     protected Long id;
 
-    @Column
+ //   @Column
     protected me.antoniocaccamo.player.rx.config.Constants.Resource.Type type;
 
     //@Column
     //protected LOCATION location;
 
-    @Column
+ //   @Column
     protected String path;
 
-    @Column
+//    @Column
     @JsonSerialize(using = DurationSerializer.class)
     @JsonDeserialize(using = DurationDeserializer.class)
     protected Duration duration;
@@ -86,18 +86,21 @@ public abstract class Resource {
         this.duration = duration;
     }
 
-    @Transient @JsonIgnore
+//    @Transient
+    @JsonIgnore
     public abstract Path getLocalPath() ;
 
     //@Transient @JsonIgnore
     //public abstract Path getHLSPath() ;
 
-    @Transient @JsonIgnore
+//   @Transient
+    @JsonIgnore
     public boolean isVideo(){
         return me.antoniocaccamo.player.rx.config.Constants.Resource.Type.VIDEO.equals(getType());
     }
 
-    @Transient @JsonIgnore
+//  @Transient
+    @JsonIgnore
     public abstract boolean isLocal();
 
     @Override
@@ -111,10 +114,11 @@ public abstract class Resource {
                 .append("localpath", getLocalPath())
                 .toString();
     }
-
-    @Transient @JsonIgnore
+//  @Transient
+    @JsonIgnore
     public abstract boolean needsTrancode();
 
-    @Transient @JsonIgnore
+ //  @Transient
+    @JsonIgnore
     public abstract String getHash();
 }

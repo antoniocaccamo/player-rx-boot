@@ -4,25 +4,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import io.reactivex.Observable;
 import lombok.extern.slf4j.Slf4j;
-import me.antoniocaccamo.player.rx.model.Model;
 import me.antoniocaccamo.player.rx.model.Model.Location;
 import me.antoniocaccamo.player.rx.model.preference.LoadedSequence;
 import me.antoniocaccamo.player.rx.model.sequence.Sequence;
-import me.antoniocaccamo.player.rx.model.resource.Resource;
-import me.antoniocaccamo.player.rx.repository.SequenceRepository;
-import me.antoniocaccamo.player.rx.service.MediaService;
 import me.antoniocaccamo.player.rx.service.ResourceService;
 import me.antoniocaccamo.player.rx.service.SequenceService;
 import me.antoniocaccamo.player.rx.service.TranscodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PreDestroy;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -56,21 +51,43 @@ public class SequenceServiceImpl implements SequenceService {
     }
 
     @Override
-    public Optional<LoadedSequence> loadFromSource(LoadedSequence loadedSequence) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+    public Optional<LoadedSequence> loadFromSource(LoadedSequence loadedSequence) {
+
+        Optional<LoadedSequence> ols = null;
+
+        log.info("reading sequence from location {} and path : {} => exists ? : {}", loadedSequence.getPath(), loadedSequence.getPath().toFile().exists());
+
+
+        if ( loadedSequence.getPath().toFile().exists() ) {
+            try {
+                Sequence sequence = mapper.readValue(loadedSequence.getPath().toFile(), Sequence.class);
+                Observable.fromIterable(sequence.getMedias())
+                        .subscribe(media -> {
+                            media.setSequence(sequence);
+                            resourceService.getResourceByHash(media.getResourceHash()).ifPresent(resource -> media.setResource(resource));
+                        })
+                ;
+                loadedSequence.setSequence(sequence);
+                ols = add(loadedSequence);
+            } catch (IOException e) {
+                log.error("error occurred", e);
+                ols = Optional.empty();
+            }
+        }
+        return ols;
     }
 
     @Override
     public Optional<LoadedSequence> add(LoadedSequence loadedSequence) {
-        // TODO Auto-generated method stub
-        return null;
+        log.info("adding sequence to cache : {}", loadedSequence);
+        sequenceCache.put(loadedSequence.getName(), loadedSequence);
+        return Optional.of(sequenceCache.getIfPresent(loadedSequence.getName()));
     }
 
     @Override
     public LoadedSequence save(LoadedSequence loadedSequence) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        save(loadedSequence.getSequence(), loadedSequence.getPath());
+        return loadedSequence;
     }
 
     @Override
@@ -86,8 +103,19 @@ public class SequenceServiceImpl implements SequenceService {
     }
 
     @Override
-    public Sequence save(Sequence sequence, Path path) throws IOException {
-        // TODO Auto-generated method stub
+    public LoadedSequence save(Sequence sequence, Path path) throws IOException {
+        File file = path.toFile().getAbsoluteFile();
+        log.info("saving seguence {} to file : {}", sequence.getName(), file.getAbsolutePath());
+        if ( ! file.getParentFile().exists() ) {
+            log.info(" crating dirs {} - result {}", file.getParentFile().getAbsolutePath(),
+                    file.getParentFile().mkdirs());
+        }
+        if ( ! file.exists() ) {
+            log.info("creating file {} - result {}",
+                    file.getAbsolutePath(),
+                    file.createNewFile());
+        }
+        mapper.writerWithDefaultPrettyPrinter().writeValue(file, sequence);
         return null;
     }
 
@@ -183,7 +211,7 @@ public class SequenceServiceImpl implements SequenceService {
         }
 
         return optionalSequence;
-        */
+        
         Optional<LoadedSequence> osl = Optional.ofNullable(sequenceCache.getIfPresent(sequenceName));
         if (osl.isPresent()){
             return Optional.of(osl.get().getSequence());

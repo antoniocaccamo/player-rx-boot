@@ -28,11 +28,17 @@ public class LoadedSequence {
     @JsonIgnore
     private Sequence sequence;
 
+    public void setSequence(Sequence sequence) {
+        this.sequence = sequence;
+        sequence.setLoadedSequence(this);
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
                 .append("name", name)
                 .append("path", path)
+                .append("sequence", sequence)
                 .toString();
     }
 }

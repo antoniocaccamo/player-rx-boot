@@ -26,6 +26,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.widgets.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import javax.validation.constraints.NotNull;
@@ -48,6 +49,7 @@ public class TabItemMonitorUI extends CTabItem {
 
     private final Shell monitorUI;
 
+    @Autowired
     private final SequenceService sequenceService;
 
     // tab -> monitor
@@ -112,7 +114,7 @@ public class TabItemMonitorUI extends CTabItem {
                         .openOn(getParent().getShell())
         ;
 
-        sequenceLooper.setOptionalSequence(sequenceService.getSequenceByName( monitorModel.getSequence()));
+        sequenceLooper.setOptionalSequence(sequenceService.getLoadedSequenceByName( monitorModel.getSequence()));
 
         // create observers
 
@@ -143,7 +145,7 @@ public class TabItemMonitorUI extends CTabItem {
 
         SwtRx.combo(sequenceCombo,values, LoadedSequence::getName)
                 .asObservable()
-                .subscribe( ls-> sequenceLooper.setOptionalSequence(Optional.ofNullable(ls.getSequence())))
+                .subscribe( ls-> sequenceLooper.setOptionalSequence(Optional.ofNullable(ls)))
         ;
 
         createObservers();
@@ -476,7 +478,7 @@ public class TabItemMonitorUI extends CTabItem {
             statusEnumRxBox.set(StatusEnum.STOPPED);
         });
 
-        pauseButton = new Button(buttonsComposite, SWT.PUSH);
+        pauseButton = new Button(buttonsComposite, SWT.TOGGLE);
         pauseButton.setText("Pause");
         Layouts.setGridData(pauseButton)
                 .grabHorizontal()
@@ -484,8 +486,13 @@ public class TabItemMonitorUI extends CTabItem {
         ;
         SwtRx.addListener(pauseButton, SWT.Selection).subscribe(evt ->{
             log.info("getIndex() [{}] - pause pressed ..", getIndex());
-            commandEventSubject.onNext( new PauseCommandEvent(null));
-            statusEnumRxBox.set(StatusEnum.PAUSED);
+            if ( pauseButton.getSelection() ) {
+                commandEventSubject.onNext(new PauseCommandEvent(null));
+                statusEnumRxBox.set(StatusEnum.PAUSED);
+            } else {
+                commandEventSubject.onNext(new ResumeCommandEvent(null));
+                statusEnumRxBox.set(StatusEnum.PLAYING);
+            }
         });
 
         playButton = new Button(buttonsComposite, SWT.PUSH);

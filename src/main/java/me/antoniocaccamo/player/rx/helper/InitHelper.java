@@ -1,23 +1,11 @@
 package me.antoniocaccamo.player.rx.helper;
 
-import java.nio.file.Files;
-
-import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import io.reactivex.Observable;
 import lombok.extern.slf4j.Slf4j;
-import me.antoniocaccamo.player.rx.config.Constants;
-import me.antoniocaccamo.player.rx.model.resource.Resource;
-import me.antoniocaccamo.player.rx.model.sequence.Sequence;
-import me.antoniocaccamo.player.rx.service.MediaService;
 import me.antoniocaccamo.player.rx.service.ResourceService;
 import me.antoniocaccamo.player.rx.service.SequenceService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author antoniocaccamo on 10/03/2020
@@ -38,8 +26,13 @@ public class InitHelper {
  
     public void getDefaultSquence() {
 
-        Observable.fromIterable( resourceService.getResources() )
-            .subscribe( resource -> log.info("resource {}", resource));
+        if ( log.isInfoEnabled() ) {
+            Observable.fromIterable(resourceService.getResources())
+                    .subscribe(resource -> log.info("init : resources {}", resource));
+
+            Observable.fromIterable(sequenceService.getLoadedSequences())
+                    .subscribe(loadedSequence ->  log.info("init : loadedSequence {}", loadedSequence));
+        }
     }
 
 /*

@@ -3,6 +3,7 @@ plugins {
 	id "io.spring.dependency-management" 			version "1.0.9.RELEASE"
 	id "com.github.johnrengelman.shadow"            version "5.2.0"
 	id "com.diffplug.gradle.eclipse.mavencentral"   version "3.21.0"
+//	id "io.freefair.aspectj.post-compile-weaving"   version "3.2.4"
 	id "application"
 	id "java"
 }
@@ -36,7 +37,7 @@ eclipseMavenCentral {
 }
 
 dependencies {
-	implementation 				"org.springframework.boot:spring-boot-starter-data-jpa"
+//	implementation 				"org.springframework.boot:spring-boot-starter-data-jpa"
 	implementation 				"org.springframework.boot:spring-boot-starter-aop"
 	implementation 				"org.springframework.boot:spring-boot-starter-web"
 
@@ -89,13 +90,19 @@ dependencies {
 	testAnnotationProcessor "org.projectlombok:lombok"
 }
 
+
+
+//apply plugin: "io.freefair.aspectj.post-compile-weaving"
+
 test.classpath += configurations.developmentOnly
 
 mainClassName = "me.antoniocaccamo.player.rx.Application"
 
+println "runs on : " + System.properties["os.name"]
+
 test {
 	useJUnitPlatform()
-	println "tests on : " + System.properties["os.name"]
+
 	if ( System.properties["os.name"].toLowerCase().contains("mac") ) {
 		test.jvmArgs  = test.jvmArgs << "-XstartOnFirstThread"
 	}

@@ -1,9 +1,7 @@
 package me.antoniocaccamo.player.rx.service.impl;
 
 import me.antoniocaccamo.player.rx.model.sequence.Media;
-import me.antoniocaccamo.player.rx.repository.MediaRepository;
 import me.antoniocaccamo.player.rx.service.MediaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,12 +10,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class MediaServiceImpl implements MediaService {
 
-    @Autowired
-    private MediaRepository mediaRepository;
+//    @Autowired
+//    private MediaRepository mediaRepository;
 
 
     @Override
     public void save(Media media) {
-        mediaRepository.save(media);
+//        mediaRepository.save(media);
     }
 }

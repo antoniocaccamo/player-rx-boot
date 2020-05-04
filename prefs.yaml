@@ -4,8 +4,8 @@ size:
   width: 616
   height: 669
 location:
-  x: 160
-  y: 824
+  x: 111
+  y: 834
 sendAllEmail: null
 weatherLatlng: "45.08,7.40"
 loadedSequences:
@@ -14,11 +14,11 @@ loadedSequences:
 screens:
 - defaultScreen: null
   size:
-    width: 487
-    height: 376
+    width: 450
+    height: 377
   location:
-    x: 835
-    y: 250
+    x: 113
+    y: 1450
   name: null
   sequence: "DEFAULT_SEQUENCE"
   from: null

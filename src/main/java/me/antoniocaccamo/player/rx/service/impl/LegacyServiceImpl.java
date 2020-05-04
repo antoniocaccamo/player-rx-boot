@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import me.antoniocaccamo.player.rx.model.preference.LoadedSequence;
 
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.JAXBContext;
@@ -387,7 +388,7 @@ public class LegacyServiceImpl implements LegacyService {
             preference.setScreens(screens);
         }
         preference.getLoadedSequences().stream()
-                .forEach(loadedSequence -> sequenceService.addLoadedSequence(loadedSequence) );
+                .forEach(loadedSequence -> sequenceService.add(loadedSequence) );
 
         return preference;
     }
@@ -404,10 +405,10 @@ public class LegacyServiceImpl implements LegacyService {
                             SequenceType.class
                     );
 
-            Optional<Sequence> os = sequenceService.getSequenceByName(sequenceType.getValue().getName());
+            Optional<LoadedSequence> os = sequenceService.getLoadedSequenceByName(sequenceType.getValue().getName());
 
             if (os.isPresent()) {
-                sequence = os.get();
+                sequence = os.get().getSequence();
             } else {
 
                 List<Media> medias = sequenceType.getValue().getVideos().getVideo()

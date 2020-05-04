@@ -11,9 +11,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.DurationSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import me.antoniocaccamo.player.rx.config.Constants;
 import me.antoniocaccamo.player.rx.model.Model;
@@ -21,7 +19,7 @@ import me.antoniocaccamo.player.rx.model.resource.Resource;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import javax.persistence.*;
+//import javax.persistence.*;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,60 +42,68 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-@Table(name = "MEDIA") @Slf4j
+//@Entity
+//@Table(name = "MEDIA")
+@Slf4j @Getter @Setter
 public class Media implements Playable, Cloneable{
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="MEDIA_SEQ")
-    @SequenceGenerator(name="MEDIA_SEQ", sequenceName="MEDIA_SEQ", allocationSize=1)
+//    @Id
+//    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="MEDIA_SEQ")
+//    @SequenceGenerator(name="MEDIA_SEQ", sequenceName="MEDIA_SEQ", allocationSize=1)
     protected Long id;
 
-    @Transient
+//  @Transient
     private Model.Location location;
 
-    @Transient
+//  @Transient
     private Model.Type         type;
 
-    @Transient
+//  @Transient
     private String             path;
 
-    @Column
+//  @Column
     @JsonSerialize(using = DurationSerializer.class)
     @JsonDeserialize(using = DurationDeserializer.class)
     private Duration       duration;
 
-    @Column(name = "DAYS_OF_WEEK", length = 7)
+//  @Column(name = "DAYS_OF_WEEK", length = 7)
     private String daysOfWeek;
 
-    @Column(name = "LIMITED")
+//  @Column(name = "LIMITED")
     private Integer limited;
 
-    @Column(name = "DATE_START")
+//  @Column(name = "DATE_START")
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate start;
 
-    @Column(name = "DATE_END")
+//  @Column(name = "DATE_END")
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate end;
 
-    @Column(name = "TIME_FROM")
+//  @Column(name = "TIME_FROM")
     @JsonSerialize(using = LocalTimeSerializer.class)
     @JsonDeserialize(using = LocalTimeDeserializer.class)
     private LocalTime from;
 
-    @Column(name = "TIME_TO")
+//  @Column(name = "TIME_TO")
     @JsonSerialize(using = LocalTimeSerializer.class)
     @JsonDeserialize(using = LocalTimeDeserializer.class)
     private LocalTime to;
 
-    @Column(name = "RESOURCE_HASH") @JsonProperty("resource-hash")
+//  @Column(name = "RESOURCE_HASH")
+    @JsonProperty("resource-hash")
     private String resourceHash;
 
-    @Transient @JsonIgnore
+//  @Transient
+    @JsonIgnore
     private Resource resource;
+
+    @JsonIgnore
+    private Sequence sequence;
+
+    /*
 
     public Long getId() {
         return id;
@@ -139,9 +145,7 @@ public class Media implements Playable, Cloneable{
         this.limited = limited;
     }
 
-    public Duration getDuration() {
-        return duration == null ? ( resource != null ? resource.getDuration() : null ): duration;
-    }
+
 
     public LocalDate getStart() {
         return start;
@@ -183,11 +187,6 @@ public class Media implements Playable, Cloneable{
         this.daysOfWeek = daysOfWeek;
     }
 
-    public void setDuration(Duration duration) {
-        this.duration = duration;
-        if ( getResource() != null &&  getResource().isVideo())
-            getResource().setDuration(duration);
-    }
 
     public String getResourceHash() {
         return resourceHash;
@@ -204,6 +203,19 @@ public class Media implements Playable, Cloneable{
     public void setResource(Resource resource) {
         this.resource = resource;
     }
+    */
+
+    public Duration getDuration() {
+        return duration == null ? ( resource != null ? resource.getDuration() : null ): duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+        if ( getResource() != null &&  getResource().isVideo())
+            getResource().setDuration(duration);
+    }
+
+
 
 
     //    public Long getId() {

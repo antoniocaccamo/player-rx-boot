@@ -1,55 +1,58 @@
 package me.antoniocaccamo.player.rx.model.sequence;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import me.antoniocaccamo.player.rx.model.Model;
+import me.antoniocaccamo.player.rx.model.preference.LoadedSequence;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+//import org.hibernate.annotations.Fetch;
+//import org.hibernate.annotations.FetchMode;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.*;
+//import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
 
 @NoArgsConstructor @AllArgsConstructor
-@Builder @Slf4j
-@Entity
-@Table(name = "SEQUENCE")
+@Builder @Slf4j @Getter @Setter
+//@Entity
+//@Table(name = "SEQUENCE")
 public class Sequence implements Cloneable, Playable {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="SEQUENCE_SEQ")
-    @SequenceGenerator(name="SEQUENCE_SEQ", sequenceName="SEQUENCE_SEQ", allocationSize=1)
+//    @Id
+//    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="SEQUENCE_SEQ")
+//    @SequenceGenerator(name="SEQUENCE_SEQ", sequenceName="SEQUENCE_SEQ", allocationSize=1)
     protected Long id;
 
-    @Column(nullable = false, unique = true)
+//    @Column(nullable = false, unique = true)
     private String name;
 
-    @Transient
+//    @Transient
     private Model.Location location;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
-    @JoinTable(
-            name = "SEQUENCE_MEDIA",
-            joinColumns        = { @JoinColumn(name = "SEQUENCE_ID", referencedColumnName = "ID")},
-            inverseJoinColumns = { @JoinColumn(name = "MEDIA_ID"   , referencedColumnName = "ID")}
-    )
+//    @OneToMany(fetch = FetchType.EAGER)
+//    @Fetch(FetchMode.SUBSELECT)
+//    @JoinTable(
+//            name = "SEQUENCE_MEDIA",
+//            joinColumns        = { @JoinColumn(name = "SEQUENCE_ID", referencedColumnName = "ID")},
+//            inverseJoinColumns = { @JoinColumn(name = "MEDIA_ID"   , referencedColumnName = "ID")}
+//    )
+    @Singular
     private List<Media> medias;
+
+    @JsonIgnore
+    private LoadedSequence loadedSequence;
 
     @PostConstruct
     public void postConstruct() {
         log.info("postConstruct ..");
         prepareForPlay();
     }
-
+/*
     public Long getId() {
         return id;
     }
@@ -81,7 +84,7 @@ public class Sequence implements Cloneable, Playable {
     public void setMedias(List<Media> medias) {
         this.medias = medias;
     }
-
+*/
 
     @Override
     public Sequence clone() {

@@ -6,9 +6,7 @@ import com.diffplug.common.swt.SwtExec;
 import io.reactivex.subjects.PublishSubject;
 import lombok.extern.slf4j.Slf4j;
 import me.antoniocaccamo.player.rx.config.Constants;
-import me.antoniocaccamo.player.rx.event.media.command.CommandEvent;
-import me.antoniocaccamo.player.rx.event.media.command.PlayCommandEvent;
-import me.antoniocaccamo.player.rx.event.media.command.StopCommandEvent;
+import me.antoniocaccamo.player.rx.event.media.command.*;
 import me.antoniocaccamo.player.rx.event.media.progress.*;
 import me.antoniocaccamo.player.rx.model.sequence.Media;
 import me.antoniocaccamo.player.rx.ui.monitor.*;
@@ -141,12 +139,22 @@ public class MonitorUI extends CoatMux {
             play(  playCommandEvent.getMedia() );
         }
 
+        if ( evt instanceof PauseCommandEvent) {
+            pause();
+        }
+
+        if ( evt instanceof ResumeCommandEvent) {
+            resume();
+        }
+
         if ( evt instanceof StopCommandEvent){
             stop();
         }
     }
 
-    public void play( Media media ) {
+
+
+    private void play( Media media ) {
         log.info("getIndex() [{}] - playing media : {}", getIndex(), media);
         // currenLayer  = this.layerMap.get(  media.getResource().getType() );
         currenLayer = currenLayer  == null ? this.layerMap.get(  Constants.Resource.Type.BROWSER ) : currenLayer;
@@ -156,6 +164,15 @@ public class MonitorUI extends CoatMux {
         log.info("getIndex() [{}] - showing : {}", getIndex(), currenLayer.getHandle().getClass().getSimpleName());
         mediaEventSubject.onNext( new StartedProgressMediaEvent(media));
     }
+
+    private void pause() {
+        currenLayer.getHandle().pause();
+    }
+
+    private void resume() {
+        currenLayer.getHandle().resume();
+    }
+
 
     public void errorOnPlay(Throwable throwable){
         this.mediaEventSubject.onNext(
@@ -169,7 +186,7 @@ public class MonitorUI extends CoatMux {
         );
     }
 
-    public void stop() {
+    private void stop() {
         currenLayer.getHandle().stop();
     }
 
