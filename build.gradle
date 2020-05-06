@@ -40,6 +40,7 @@ dependencies {
 //	implementation 				"org.springframework.boot:spring-boot-starter-data-jpa"
 	implementation 				"org.springframework.boot:spring-boot-starter-aop"
 	implementation 				"org.springframework.boot:spring-boot-starter-web"
+	implementation				"org.springframework:spring-aspects:$SPRING_VERSION"
 
 	compile						"org.webjars.npm:vue:2.6.11"
 	compile						"org.webjars.npm:babel__polyfill:7.8.7"

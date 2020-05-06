@@ -49,7 +49,7 @@ public class TabItemMonitorUI extends CTabItem {
     private final Shell monitorUI;
 
     @Autowired
-    private final SequenceService sequenceService;
+    private  SequenceService sequenceService;
 
     // tab -> monitor
     private final PublishSubject<CommandEvent> commandEventSubject = PublishSubject.create();
@@ -75,7 +75,9 @@ public class TabItemMonitorUI extends CTabItem {
     public TabItemMonitorUI(CTabFolder tabFolder, Screen monitorModel, int index) {
         super(tabFolder, SWT.NONE);
 
-        sequenceService = Application.CONTEXT.getBean(SequenceService.class);
+        //sequenceService = Application.CONTEXT.getBean(SequenceService.class);
+
+        log.info( "sequenceService == null : {}", sequenceService == null   );
 
         setText(String.format("screen %s", index + 1));
         this.screen = monitorModel;
