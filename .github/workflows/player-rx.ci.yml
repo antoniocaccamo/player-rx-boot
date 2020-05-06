@@ -18,8 +18,12 @@ jobs:
         args: build -x test
   
     - name : list of distribution build/distributions
-      run  : ls -lR
-      working-directory : build/distributions
+      run  : ls -lR build/distributions
+      
+    - name : download of distribution build/distributions
+      uses : actions/download-artifact@v2
+      with :
+        path : build/distributions
      
 
  #  - name : gradle sonarqube
