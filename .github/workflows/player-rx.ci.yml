@@ -16,6 +16,11 @@ jobs:
       uses : OrangeLabs-moe/gradle-actions@v5.0-openjdk-8
       with :
         args: build -x test
+  
+    - name : list of distribution build/distributions
+      run  : ls -lR
+      working-directory : build/distributions
+     
 
  #  - name : gradle sonarqube
  #    uses : OrangeLabs-moe/gradle-actions@v5.0-openjdk-8
