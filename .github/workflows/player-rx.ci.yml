@@ -23,7 +23,7 @@ jobs:
     - name : download of distribution build/distributions
       uses : actions/download-artifact@v2
       with :
-        path : build/distributions
+        path : build/distributions/player-rx-boot-0.0.1-SNAPSHOT.zip
      
 
  #  - name : gradle sonarqube
