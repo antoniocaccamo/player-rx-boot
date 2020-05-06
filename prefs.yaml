@@ -1,26 +1,40 @@
 ---
 computer: "antonio"
 size:
-  width: 616
-  height: 669
+  width: 876
+  height: 604
 location:
-  x: 111
-  y: 834
+  x: 114
+  y: 628
 sendAllEmail: null
 weatherLatlng: "45.08,7.40"
 loadedSequences:
 - name: "DEFAULT_SEQUENCE"
   path: "file:///D:/development/workspaces/antoniocaccamo/player-rx-boot/DEFAULT_SEQUENCE.yaml"
+- name: "TEST_SEQUENCE"
+  path: "file:///D:/development/workspaces/antoniocaccamo/player-rx-boot/test.seq.yaml"
 screens:
-- defaultScreen: null
+- defaultScreen: "Y"
   size:
     width: 450
-    height: 377
+    height: 277
   location:
     x: 113
-    y: 1450
+    y: 150
   name: null
   sequence: "DEFAULT_SEQUENCE"
+  from: null
+  to: null
+  timing: "ALL_DAY"
+- defaultScreen: "N"
+  size:
+    width: 450
+    height: 277
+  location:
+    x: 400
+    y: 150
+  name: null
+  sequence: "TEST_SEQUENCE"
   from: null
   to: null
   timing: "ALL_DAY"

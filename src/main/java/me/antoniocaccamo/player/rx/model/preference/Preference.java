@@ -56,11 +56,17 @@ public class Preference extends Model {
 
     public void addScreen(Screen screen){
         if (screens == null) screens = Collections.EMPTY_LIST;
-        screens.add(screen);
+        log.info( "screen added ? : {}", screens.add(screen));
     }
 
     public void addLoadedSequence(LoadedSequence loadedSequence) {
         if (loadedSequences == null) loadedSequences = Collections.EMPTY_SET;
         loadedSequences.add(loadedSequence);
+    }
+
+    public void removeScreen(Screen screen){
+        if ( screens != null) {
+            log.info( "screen removed ? : {}", screens.remove(screen));            
+        }
     }
 }

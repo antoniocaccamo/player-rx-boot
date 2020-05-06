@@ -19,7 +19,6 @@ import me.antoniocaccamo.player.rx.model.preference.LoadedSequence;
 import me.antoniocaccamo.player.rx.model.preference.Screen;
 import me.antoniocaccamo.player.rx.model.resource.LocalResource;
 import me.antoniocaccamo.player.rx.model.sequence.Media;
-import me.antoniocaccamo.player.rx.model.sequence.Sequence;
 import me.antoniocaccamo.player.rx.model.sequence.SequenceLooper;
 import me.antoniocaccamo.player.rx.service.SequenceService;
 import org.eclipse.swt.SWT;
@@ -45,7 +44,7 @@ public class TabItemMonitorUI extends CTabItem {
     @Getter
     private final int index;
     @Getter
-    private final Screen monitorModel;
+    private final Screen screen;
 
     private final Shell monitorUI;
 
@@ -79,7 +78,7 @@ public class TabItemMonitorUI extends CTabItem {
         sequenceService = Application.CONTEXT.getBean(SequenceService.class);
 
         setText(String.format("screen %s", index + 1));
-        this.monitorModel = monitorModel;
+        this.screen = monitorModel;
         this.index = index;
 
         setControl(new Composite(getParent(), SWT.NONE) );
@@ -138,7 +137,7 @@ public class TabItemMonitorUI extends CTabItem {
 
     public void applyMonitorModel() {
 
-        log.info("getIndex() [{}] - applyMonitorModel : {}" , getIndex(), getMonitorModel() );
+        log.info("getIndex() [{}] - apply screen : {}" , getIndex(), getScreen() );
 
         ImmutableList<LoadedSequence> values = ImmutableList.copyOf(sequenceService.getLoadedSequences());
         values.stream().forEach(sq -> sequenceCombo.add(sq.getName()));
@@ -170,8 +169,9 @@ public class TabItemMonitorUI extends CTabItem {
                         evt -> {
                             progressBar.setMaximum((int) evt.getTotal());
                             progressBar.setSelection( (int) evt.getActual() );
+                            if (log.isDebugEnabled()) log.debug("getIndex() [{}] -  PercentageProgressMediaEvent : : {}", getIndex(),  evt);
                         },
-                        t -> log.error("getIndex() [{}] - error occurred on update % : {}", getIndex(),  t)
+                        t -> log.error("getIndex() [{}] - error occurred on update : {}", getIndex(),  t)
                 );
 
         Disposable endedProgressMediaEventDisposable =  mediaEventSubject.filter(me -> me instanceof  EndedProgressMediaEvent)
@@ -198,12 +198,13 @@ public class TabItemMonitorUI extends CTabItem {
         statusEnumRxBox.asObservable()
                 .observeOn(  SwtExec.async().getRxExecutor().scheduler())
                 .subscribe(statusEnum ->  {
-                    log.debug("### getIndex() [{}] - status : {} ###", getIndex(), statusEnum);
+                    log.info("### getIndex() [{}] - status : {} ###", getIndex(), statusEnum);
                     status = statusEnum;
                     switch (statusEnum){
                         case STOPPED:
                             progressBar.setSelection( 0 );
                             running = RunningEnum.N;
+                            pauseButton.setSelection(false);
                         case NOT_ACTIVE:
                             stopButton.setEnabled(false);
                             pauseButton.setEnabled(false);
@@ -297,13 +298,13 @@ public class TabItemMonitorUI extends CTabItem {
         spinner = new Spinner(sizeGroup, SWT.NONE);
         spinner.setMinimum(0);spinner.setMaximum(Integer.MAX_VALUE);
         Layouts.setGridData(spinner).grabAll();
-        spinner.setSelection(monitorModel.getSize().getWidth());
+        spinner.setSelection(screen.getSize().getWidth());
         SwtRx.addListener(spinner, SWT.Modify , SWT.Selection)
                 .subscribe(
                         evt -> {
-                            monitorModel.getSize().setWidth(((Spinner) evt.widget).getSelection());
-                            log.info("getIndex() [{}] - monitorModel.getSize().getWidth()  : {}", getIndex(), monitorModel.getSize().getWidth());
-                            monitorUI.setSize(monitorModel.getSize().toPoint());
+                            screen.getSize().setWidth(((Spinner) evt.widget).getSelection());
+                            log.info("getIndex() [{}] - monitorModel.getSize().getWidth()  : {}", getIndex(), screen.getSize().getWidth());
+                            monitorUI.setSize(screen.getSize().toPoint());
                         });
 
         label = new Label(sizeGroup, SWT.NONE);
@@ -312,13 +313,13 @@ public class TabItemMonitorUI extends CTabItem {
         spinner = new Spinner(sizeGroup, SWT.NONE);
         spinner.setMinimum(0); spinner.setMaximum(Integer.MAX_VALUE);
         Layouts.setGridData(spinner).grabAll();
-        spinner.setSelection(monitorModel.getSize().getHeight());
+        spinner.setSelection(screen.getSize().getHeight());
         SwtRx.addListener(spinner, SWT.Modify , SWT.Selection)
                 .subscribe(
                         evt -> {
-                            monitorModel.getSize().setHeight(((Spinner) evt.widget).getSelection());
-                            log.info("monitorModel.getSize().getHeight() : {}", monitorModel.getSize().getHeight());
-                            monitorUI.setSize(monitorModel.getSize().toPoint());
+                            screen.getSize().setHeight(((Spinner) evt.widget).getSelection());
+                            log.info("monitorModel.getSize().getHeight() : {}", screen.getSize().getHeight());
+                            monitorUI.setSize(screen.getSize().toPoint());
                         });
 
         // -- location
@@ -336,13 +337,13 @@ public class TabItemMonitorUI extends CTabItem {
         spinner = new Spinner(locationGroup, SWT.NONE);
         spinner.setMinimum(0);spinner.setMaximum(Integer.MAX_VALUE);
         Layouts.setGridData(spinner).grabAll();
-        spinner.setSelection(monitorModel.getLocation().getTop());
+        spinner.setSelection(screen.getLocation().getTop());
         SwtRx.addListener(spinner, SWT.Modify , SWT.Selection)
                 .subscribe(
                         evt -> {
-                            monitorModel.getLocation().setTop(((Spinner) evt.widget).getSelection());
-                            log.info("getIndex() [{}] - monitorModel.getLocation().getTop()  : {}", getIndex(),  monitorModel.getLocation().getTop());
-                            monitorUI.setLocation(monitorModel.getLocation().toPoint());
+                            screen.getLocation().setTop(((Spinner) evt.widget).getSelection());
+                            log.info("getIndex() [{}] - monitorModel.getLocation().getTop()  : {}", getIndex(),  screen.getLocation().getTop());
+                            monitorUI.setLocation(screen.getLocation().toPoint());
                         });
 
         label = new Label(locationGroup, SWT.NONE);
@@ -351,13 +352,13 @@ public class TabItemMonitorUI extends CTabItem {
         spinner = new Spinner(locationGroup, SWT.NONE);
         spinner.setMinimum(0); spinner.setMaximum(Integer.MAX_VALUE);
         Layouts.setGridData(spinner).grabAll();
-        spinner.setSelection(monitorModel.getLocation().getLeft());
+        spinner.setSelection(screen.getLocation().getLeft());
         SwtRx.addListener(spinner, SWT.Modify , SWT.Selection)
                 .subscribe(
                         evt -> {
-                            monitorModel.getLocation().setLeft(((Spinner) evt.widget).getSelection());
-                            log.info("getIndex() [{}] - monitorModel.getLocation().getLeft() : {}", getIndex(), monitorModel.getLocation().getLeft());
-                            monitorUI.setLocation(monitorModel.getLocation().toPoint());
+                            screen.getLocation().setLeft(((Spinner) evt.widget).getSelection());
+                            log.info("getIndex() [{}] - monitorModel.getLocation().getLeft() : {}", getIndex(), screen.getLocation().getLeft());
+                            monitorUI.setLocation(screen.getLocation().toPoint());
                         });
 
         // watch
@@ -485,7 +486,8 @@ public class TabItemMonitorUI extends CTabItem {
                 .minimumWidth(SwtMisc.defaultButtonWidth())
         ;
         SwtRx.addListener(pauseButton, SWT.Selection).subscribe(evt ->{
-            log.info("getIndex() [{}] - pause pressed ..", getIndex());
+            log.info("getIndex() [{}] - pause pressed -  pauseButton.getSelection() {}", getIndex() ,  pauseButton.getSelection());
+            
             if ( pauseButton.getSelection() ) {
                 commandEventSubject.onNext(new PauseCommandEvent(null));
                 statusEnumRxBox.set(StatusEnum.PAUSED);
@@ -553,53 +555,53 @@ public class TabItemMonitorUI extends CTabItem {
      *
      */
     private void check() {
-        log.debug("getIndex() [{}] - running [{}] - status [{}] - getMonitorModel().isTimed() [{}] ", getIndex(), getRunning(), getStatus() , getMonitorModel().isTimed());
+        log.debug("getIndex() [{}] - running [{}] - status [{}] - getScreen().isTimed() [{}] ", getIndex(), getRunning(), getStatus() , getScreen().isTimed());
 
         if ( StatusEnum.STOPPED.equals( getStatus()) ) {
             return;
         }
 
-        if ( ! monitorModel.isTimed() ) {
+        if ( ! screen.isTimed() ) {
             if (  RunningEnum.N.equals(getRunning()) || ! ( StatusEnum.PLAYING.equals(getStatus()) || StatusEnum.PAUSED.equals(getStatus())) ) {
                 commandEventSubject.onNext( new StartCommandEvent() );
             }
         }
 
-        if ( monitorModel.isTimed() ) {
+        if ( screen.isTimed() ) {
 
             LocalTime now   = LocalTime.now();
 
             if ( RunningEnum.Y.equals(getRunning()) ) {
-                log.debug("*** getIndex() [{}] - now [{}] getStatus() [{}] getMonitorModel().getFrom() [{}]  getMonitorModel().getTo() [{}]",
+                log.debug("*** getIndex() [{}] - now [{}] getStatus() [{}] getScreen().getFrom() [{}]  getScreen().getTo() [{}]",
 
                         getIndex(),
                         now,
                         getStatus() ,
-                        getMonitorModel().getFrom(),
-                        getMonitorModel().getTo()
+                        getScreen().getFrom(),
+                        getScreen().getTo()
                 );
 
                 switch ( getStatus() ) {
                     case PAUSED:
                     case PLAYING:
-                        if ( (now.isBefore( getMonitorModel().getFrom() ) || now.isAfter( getMonitorModel().getTo() ))  ) {
+                        if ( (now.isBefore( getScreen().getFrom() ) || now.isAfter( getScreen().getTo() ))  ) {
                             log.warn("*** getIndex() [{}] - it's time to deactivate : now [{}]  getStart() [{}] getEnd() [{}]",
                                     getIndex(),
                                     now,
-                                    getMonitorModel().getFrom(),
-                                    getMonitorModel().getTo()
+                                    getScreen().getFrom(),
+                                    getScreen().getTo()
                             );
                             commandEventSubject.onNext( new DeactivateCommandEvent() );
                         }
                         break;
 
                     case NOT_ACTIVE:
-                        if ( getMonitorModel().getFrom().isBefore(now) && now.isBefore(getMonitorModel().getTo()) ) {
+                        if ( getScreen().getFrom().isBefore(now) && now.isBefore(getScreen().getTo()) ) {
                             log.warn("*** getIndex() [{}] - it's time to   activate :  now [{}]  getStart() [{}] getEnd() [{}]",
                                     getIndex(),
                                     now,
-                                    getMonitorModel().getFrom(),
-                                    getMonitorModel().getTo()
+                                    getScreen().getFrom(),
+                                    getScreen().getTo()
                             );
                             commandEventSubject.onNext( new StartCommandEvent() );
                         }

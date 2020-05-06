@@ -84,7 +84,7 @@ public class ResourceLibraryUI extends Composite {
                             resourcePublishSubject.onNext(r);
                         })
                 );
-        
+
     }
 
 

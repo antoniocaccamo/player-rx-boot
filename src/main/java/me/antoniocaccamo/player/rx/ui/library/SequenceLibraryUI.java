@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import me.antoniocaccamo.player.rx.Application;
 import me.antoniocaccamo.player.rx.model.preference.LoadedSequence;
 import me.antoniocaccamo.player.rx.model.resource.Resource;
-import me.antoniocaccamo.player.rx.model.sequence.Media;
 import me.antoniocaccamo.player.rx.service.SequenceService;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;

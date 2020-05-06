@@ -2,7 +2,6 @@ package me.antoniocaccamo.player.rx.ui;
 
 import com.diffplug.common.rx.RxBox;
 import com.diffplug.common.swt.Layouts;
-import com.diffplug.common.swt.jface.ColumnViewerFormat;
 import com.diffplug.common.swt.jface.ViewerMisc;
 import io.reactivex.subjects.PublishSubject;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +11,6 @@ import me.antoniocaccamo.player.rx.service.ResourceService;
 import me.antoniocaccamo.player.rx.ui.library.PreviewLibraryUI;
 import me.antoniocaccamo.player.rx.ui.library.ResourceLibraryUI;
 import me.antoniocaccamo.player.rx.ui.library.SequenceLibraryUI;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;

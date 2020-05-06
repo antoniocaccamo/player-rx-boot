@@ -6,6 +6,7 @@ import com.diffplug.common.swt.SwtExec;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import me.antoniocaccamo.player.rx.Application;
+import me.antoniocaccamo.player.rx.config.Constants;
 import me.antoniocaccamo.player.rx.model.sequence.Media;
 import me.antoniocaccamo.player.rx.ui.AbstractUI;
 import me.antoniocaccamo.player.rx.ui.MonitorUI;
@@ -26,8 +27,7 @@ public class BrowserUI extends AbstractUI {
         PHOTO ("photo")   ,
         VIDEO("video")    ,
         WEATHER("weather");
-
-        ;
+        
         private final  String show;
 
         ShowEnum(String show) {
@@ -62,7 +62,7 @@ public class BrowserUI extends AbstractUI {
 
         // final String url = String.format("http://localhost:%s/html/ui/%s/index.html", Application.SERVER_PORT, show);
         final String url = String.format("http://localhost:%s/html/ui/index.html", Application.SERVER_PORT);
-        log.info("getIndex() [{}] - url  : {}", getMonitorUI().getIndex(), url);
+        log.info("getIndex() [{}] - url  : {}",  getMonitorUI().isPresent() ? getMonitorUI().get().getIndex() : Constants.Screen.COLOR_SEPARATOR, url);
         browser.setUrl( url );
 //        browser.addProgressListener(
 //                new ProgressAdapter() {

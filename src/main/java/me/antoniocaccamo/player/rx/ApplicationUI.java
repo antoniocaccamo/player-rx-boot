@@ -119,11 +119,13 @@ public class ApplicationUI {
             tabFolderIndex = new AtomicInteger(0);
 
             preference.getScreens().stream()
-                    .forEach( monitorModel -> new TabItemMonitorUI(tabFolder, monitorModel, tabFolderIndex.getAndIncrement()) );
+                    .forEach( monitorModel -> new TabItemMonitorUI(tabFolder, monitorModel, tabFolderIndex.getAndIncrement()).applyMonitorModel() );
 
+                    /*
             Observable.fromArray(tabFolder.getItems())
                     .map(i -> (TabItemMonitorUI) i)
                     .subscribe( tabItemMonitorUI -> tabItemMonitorUI.applyMonitorModel() );
+                    */
 
             SwtRx.addListener(cmp, SWT.Resize, SWT.Move)
                     .subscribe(event ->
@@ -174,17 +176,17 @@ public class ApplicationUI {
                 .setText("Add")
                 .setStyle(Actions.Style.PUSH)
                 .setListener(event -> {
-                    TabItemMonitorUI cTabItem = new TabItemMonitorUI(tabFolder,
-                            Screen.builder()
-                                    .defaultScreen(Constants.Screen.DefaultEnum.N)
-                                    .size( ScreenSize.builder().width(Constants.Screen.WIDTH).height(Constants.Screen.HEIGHT).build())
-                                    .location(ScreenLocation.builder().top(Constants.Screen.TOP).left(Constants.Screen.LEFT).build() )
-                                    .sequence(Constants.Sequence.DefaultSequenceName)
-                                    .timing(Constants.TimingEnum.ALL_DAY)
-                                    .build()
-                            , tabFolderIndex.getAndIncrement());
+                        Screen screen = Screen.builder()
+                                .defaultScreen(Constants.Screen.DefaultEnum.N)
+                                .size( ScreenSize.builder().width(Constants.Screen.WIDTH).height(Constants.Screen.HEIGHT).build())
+                                .location(ScreenLocation.builder().top(Constants.Screen.TOP).left(Constants.Screen.LEFT).build() )
+                                .sequence(Constants.Sequence.DefaultSequenceName)
+                                .timing(Constants.TimingEnum.ALL_DAY)
+                                .build();
+                        TabItemMonitorUI cTabItem = new TabItemMonitorUI(tabFolder, screen, tabFolderIndex.getAndIncrement());
                     tabFolder.setSelection(cTabItem);
                     cTabItem.applyMonitorModel();
+                    preference.addScreen(screen);
                 })
                 .build()
                 ;
@@ -193,14 +195,15 @@ public class ApplicationUI {
                 //.setImage(ImageDescriptors.createManagedImage(SWTHelper.getImage("images/logo.jpg").getImageData(), cmp).)
                 .setText("Remove")
                 .setStyle(Actions.Style.PUSH)
-                .setListener(evt ->
-                        Observable.fromArray(tabFolder.getItems())
-                                .count()
-                                .filter(cnt -> cnt > 1)
-                                .subscribe( cnt -> {
-                                    tabFolder.getSelection().dispose();
-                                    tabFolderIndex.decrementAndGet();
-                                })
+                .setListener(evt -> Observable.fromArray(tabFolder.getItems())
+                                        .count()
+                                        .filter(cnt -> cnt > 1)
+                                        .subscribe(cnt -> {
+                                                TabItemMonitorUI cTabItem = (TabItemMonitorUI) Observable.fromArray(tabFolder.getItems()).blockingLast();
+                                                preference.removeScreen(cTabItem.getScreen());
+                                                cTabItem.dispose();
+                                                tabFolderIndex.decrementAndGet();
+                                        })
                 )
                 .build()
                 ;
