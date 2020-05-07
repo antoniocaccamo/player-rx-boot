@@ -1,8 +1,8 @@
 package me.antoniocaccamo.player.rx.ui;
 
-import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.rx.RxBox;
 import com.diffplug.common.swt.*;
+import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
 import lombok.Getter;
@@ -15,17 +15,16 @@ import me.antoniocaccamo.player.rx.event.media.progress.EndedProgressMediaEvent;
 import me.antoniocaccamo.player.rx.event.media.progress.MediaEvent;
 import me.antoniocaccamo.player.rx.event.media.progress.PercentageProgressMediaEvent;
 import me.antoniocaccamo.player.rx.helper.LocaleHelper;
-import me.antoniocaccamo.player.rx.model.preference.LoadedSequence;
 import me.antoniocaccamo.player.rx.model.preference.Screen;
 import me.antoniocaccamo.player.rx.model.resource.LocalResource;
 import me.antoniocaccamo.player.rx.model.sequence.Media;
 import me.antoniocaccamo.player.rx.model.sequence.SequenceLooper;
 import me.antoniocaccamo.player.rx.service.SequenceService;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.widgets.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import javax.validation.constraints.NotNull;
@@ -38,18 +37,20 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author antoniocaccamo on 20/02/2020
  */
-@Slf4j @Configurable(preConstruction = true)
+@Slf4j
+//@Configurable(preConstruction = true)
 public class TabItemMonitorUI extends CTabItem {
 
     @Getter
     private final int index;
+
     @Getter
     private final Screen screen;
 
     private final Shell monitorUI;
 
-    @Autowired
-    private  SequenceService sequenceService;
+//    @Autowired
+    private  final SequenceService sequenceService;
 
     // tab -> monitor
     private final PublishSubject<CommandEvent> commandEventSubject = PublishSubject.create();
@@ -72,15 +73,14 @@ public class TabItemMonitorUI extends CTabItem {
     private Button stopButton;
     private Combo sequenceCombo ;
 
-    public TabItemMonitorUI(CTabFolder tabFolder, Screen monitorModel, int index) {
+    public TabItemMonitorUI(CTabFolder tabFolder, Screen screen, int index) {
         super(tabFolder, SWT.NONE);
 
-        //sequenceService = Application.CONTEXT.getBean(SequenceService.class);
-
-        log.info( "sequenceService == null : {}", sequenceService == null   );
+        sequenceService = Application.CONTEXT.getBean(SequenceService.class);
+        //log.info( "sequenceService == null : {}", sequenceService == null   );
 
         setText(String.format("screen %s", index + 1));
-        this.screen = monitorModel;
+        this.screen = screen;
         this.index = index;
 
         setControl(new Composite(getParent(), SWT.NONE) );
@@ -110,12 +110,12 @@ public class TabItemMonitorUI extends CTabItem {
                     Layouts.setGridData( new MonitorUI(cmp, index, commandEventSubject, mediaEventSubject) )
                             .grabAll();
                 })
-                        .setSize(monitorModel.getSize().toPoint())
-                        .setLocation(monitorModel.getLocation().toPoint())
+                        .setSize(screen.getSize().toPoint())
+                        .setLocation(screen.getLocation().toPoint())
                         .openOn(getParent().getShell())
         ;
 
-        sequenceLooper.setOptionalSequence(sequenceService.getLoadedSequenceByName( monitorModel.getSequence()));
+        sequenceLooper.setOptionalSequence(sequenceService.getLoadedSequenceByName( screen.getSequence()));
 
         // create observers
 
@@ -123,7 +123,7 @@ public class TabItemMonitorUI extends CTabItem {
 //        SwtExec.async().guardOn(this)
 //                .subscribe(
 //                        Single.create(emitter -> {
-//                            emitter.onSuccess(sequenceService.getSequenceByName( monitorModel.getSequence())  );
+//                            emitter.onSuccess(sequenceService.getSequenceByName( screen.getSequence())  );
 //                        }).toObservable()
 //                        , value -> {
 //                            Optional<Sequence> sequence = (Optional<Sequence>) value;
@@ -137,17 +137,13 @@ public class TabItemMonitorUI extends CTabItem {
 
     }
 
-    public void applyMonitorModel() {
+    public void applyScreen() {
 
         log.info("getIndex() [{}] - apply screen : {}" , getIndex(), getScreen() );
 
-        ImmutableList<LoadedSequence> values = ImmutableList.copyOf(sequenceService.getLoadedSequences());
-        values.stream().forEach(sq -> sequenceCombo.add(sq.getName()));
-
-        SwtRx.combo(sequenceCombo,values, LoadedSequence::getName)
-                .asObservable()
-                .subscribe( ls-> sequenceLooper.setOptionalSequence(Optional.ofNullable(ls)))
-        ;
+        Observable.fromIterable(sequenceService.getLoadedSequences())
+                .subscribe( lsq -> sequenceCombo.add(lsq.getName())
+        );
 
         createObservers();
 
@@ -223,6 +219,13 @@ public class TabItemMonitorUI extends CTabItem {
                         default:
                     }
                 });
+
+        sequenceCombo.addModifyListener( e -> {
+            if ( StringUtils.isEmpty(sequenceCombo.getText()) )
+                return;
+            sequenceLooper.setOptionalSequence(sequenceService.getLoadedSequenceByName(sequenceCombo.getText()));
+            screen.setSequence(sequenceCombo.getText());
+        });
 
         commandEventSubject
                 .filter(commandEvent -> commandEvent instanceof StartCommandEvent)

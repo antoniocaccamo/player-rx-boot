@@ -47,7 +47,9 @@ public class SequenceServiceImpl implements SequenceService {
 
     @Override
     public Optional<LoadedSequence> getLoadedSequenceByName(String sequenceName) {
-        return Optional.ofNullable(sequenceCache.getIfPresent(sequenceName));
+        Optional<LoadedSequence> osl = Optional.ofNullable(sequenceCache.getIfPresent(sequenceName));
+        log.info("sequence by cache - sequenceName [{}] loadedSequence [{}]", sequenceName, osl.isPresent() ? osl.get().getPath() : "NOT FOUND !");
+        return osl;
     }
 
     @Override
@@ -55,7 +57,7 @@ public class SequenceServiceImpl implements SequenceService {
 
         Optional<LoadedSequence> ols = null;
 
-        log.info("reading sequence from location {} and path : {} => exists ? : {}", loadedSequence.getPath(), loadedSequence.getPath().toFile().exists());
+        log.info("reading sequence from path : {} => exists ? : {}", loadedSequence.getPath(), loadedSequence.getPath().toFile().exists());
 
 
         if ( loadedSequence.getPath().toFile().exists() ) {
@@ -79,7 +81,7 @@ public class SequenceServiceImpl implements SequenceService {
 
     @Override
     public Optional<LoadedSequence> add(LoadedSequence loadedSequence) {
-        log.info("adding sequence to cache : {}", loadedSequence);
+        log.info("adding sequence to cache : {} -> {}", loadedSequence.getName(), loadedSequence.getPath());
         sequenceCache.put(loadedSequence.getName(), loadedSequence);
         return Optional.of(sequenceCache.getIfPresent(loadedSequence.getName()));
     }

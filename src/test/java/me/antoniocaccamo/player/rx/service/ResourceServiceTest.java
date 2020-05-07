@@ -1,31 +1,12 @@
 package me.antoniocaccamo.player.rx.service;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.time.Duration;
-import java.util.Optional;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import lombok.extern.slf4j.Slf4j;
-import me.antoniocaccamo.player.rx.config.Constants;
-import me.antoniocaccamo.player.rx.model.jackson.ResourceCollectionWrapprer;
-import me.antoniocaccamo.player.rx.model.resource.RemoteResource;
-import me.antoniocaccamo.player.rx.model.resource.Resource;
-import me.antoniocaccamo.player.rx.model.sequence.Media;
-import me.antoniocaccamo.player.rx.model.sequence.Sequence;
 
 /**
  * @author antoniocaccamo on 22/04/2020

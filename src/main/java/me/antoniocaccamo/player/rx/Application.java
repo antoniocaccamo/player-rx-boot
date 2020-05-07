@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
-@SpringBootApplication @Slf4j
+@SpringBootApplication
+@Slf4j
 public class Application {
 
     public static int SERVER_PORT = 8080;
@@ -66,7 +67,7 @@ public class Application {
 
 		Executors.newSingleThreadScheduledExecutor().execute( () -> {
 
-					*//*
+
 					Shells.builder(SWT.RESIZE | SWT.ICON | SWT.CLOSE, cmp -> {
 						log.info("launching swt");
 						Layouts.setGrid(cmp)

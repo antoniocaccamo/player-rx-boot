@@ -57,7 +57,8 @@ public class PreferenceServiceImpl implements PreferenceService {
 
     @Override
     public Preference read() {
-        log.info("preferenceModel : {}", preferenceModel);
+        if (log.isDebugEnabled())
+            log.debug("preferenceModel : {}", preferenceModel);
         return preferenceModel;
     }
 

@@ -6,6 +6,7 @@ plugins {
 //	id "io.freefair.aspectj.post-compile-weaving"   version "3.2.4"
 	id "application"
 	id "java"
+	id "maven"
 }
 
 group = "me.antoniocaccamo.digitalsignage"
@@ -36,9 +37,11 @@ eclipseMavenCentral {
 	}
 }
 
+
+
 dependencies {
 //	implementation 				"org.springframework.boot:spring-boot-starter-data-jpa"
-	implementation 				"org.springframework.boot:spring-boot-starter-aop"
+//	implementation 				"org.springframework.boot:spring-boot-starter-aop"
 	implementation 				"org.springframework.boot:spring-boot-starter-web"
 	implementation				"org.springframework:spring-aspects:$SPRING_VERSION"
 
@@ -99,6 +102,10 @@ test.classpath += configurations.developmentOnly
 
 mainClassName = "me.antoniocaccamo.player.rx.Application"
 
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'com.github.johnrengelman.shadow'
+
 println "runs on : " + System.properties["os.name"]
 
 test {
@@ -110,10 +117,11 @@ test {
 	println "test.jvmArgs : " + test.jvmArgs
 }
 
+/*
 shadowJar {
     mergeServiceFiles()
 }
-
+*/
 run.classpath += configurations.developmentOnly
 
 //if ( System.properties["os.name"].toLowerCase().contains("windows") ) {
@@ -131,3 +139,6 @@ tasks.withType(JavaCompile){
     options.encoding = "UTF-8"
     options.compilerArgs.add("-parameters")
 }
+
+shadowDistZip.classifier = 'shadow'
+shadowDistTar.classifier = 'shadow'

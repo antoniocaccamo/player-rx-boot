@@ -53,6 +53,9 @@ public class ApplicationUI {
     @NotNull
     private int port;
 
+    @Value("${spring.application.resource-prefix-path}")
+    private String resourcePrefixPath;
+
     @Autowired
     private PreferenceService preferenceService;
 
@@ -71,6 +74,9 @@ public class ApplicationUI {
 
     private CoatMux.Layer<Composite> tabFolderLayer;
     private CoatMux.Layer<Composite> resourceLibraryLayer;
+
+    public ApplicationUI() {
+    }
 
 
     public void show() {
@@ -119,7 +125,7 @@ public class ApplicationUI {
             tabFolderIndex = new AtomicInteger(0);
 
             preference.getScreens().stream()
-                    .forEach( monitorModel -> new TabItemMonitorUI(tabFolder, monitorModel, tabFolderIndex.getAndIncrement()).applyMonitorModel() );
+                    .forEach( monitorModel -> new TabItemMonitorUI(tabFolder, monitorModel, tabFolderIndex.getAndIncrement()).applyScreen() );
 
                     /*
             Observable.fromArray(tabFolder.getItems())
@@ -185,7 +191,7 @@ public class ApplicationUI {
                                 .build();
                         TabItemMonitorUI cTabItem = new TabItemMonitorUI(tabFolder, screen, tabFolderIndex.getAndIncrement());
                     tabFolder.setSelection(cTabItem);
-                    cTabItem.applyMonitorModel();
+                    cTabItem.applyScreen();
                     preference.addScreen(screen);
                 })
                 .build()

@@ -4,8 +4,8 @@ size:
   width: 876
   height: 604
 location:
-  x: 114
-  y: 628
+  x: 111
+  y: 615
 sendAllEmail: null
 weatherLatlng: "45.08,7.40"
 loadedSequences:
@@ -19,22 +19,22 @@ screens:
     width: 450
     height: 277
   location:
-    x: 113
-    y: 150
+    x: 520
+    y: 100
   name: null
-  sequence: "DEFAULT_SEQUENCE"
+  sequence: "TEST_SEQUENCE"
   from: null
   to: null
   timing: "ALL_DAY"
 - defaultScreen: "N"
   size:
-    width: 450
-    height: 277
+    width: 500
+    height: 400
   location:
-    x: 400
-    y: 150
+    x: 100
+    y: 100
   name: null
-  sequence: "TEST_SEQUENCE"
+  sequence: "DEFAULT_SEQUENCE"
   from: null
   to: null
   timing: "ALL_DAY"

@@ -15,4 +15,5 @@ public interface ResourceService {
     Optional<Resource> getResourceByHash(String resourceHash);
 
     Resource save(Resource resource);
+
 }

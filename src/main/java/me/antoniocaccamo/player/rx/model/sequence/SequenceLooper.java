@@ -31,6 +31,7 @@ public class SequenceLooper {
     public void setOptionalSequence(Optional<LoadedSequence> optioanlSequence){
         this.optionalSequence = optioanlSequence;
         reset();
+        log.info("sequence to loop : {}", optioanlSequence.isPresent() ? optioanlSequence.get().getName() : "NOT FOUND !");
     }
 
     private void reset() {

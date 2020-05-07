@@ -7,6 +7,8 @@ import me.antoniocaccamo.player.rx.service.SequenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 /**
  * @author antoniocaccamo on 10/03/2020
  */
@@ -26,12 +28,12 @@ public class InitHelper {
  
     public void getDefaultSquence() {
 
-        if ( log.isInfoEnabled() ) {
+        if ( log.isDebugEnabled() ) {
             Observable.fromIterable(resourceService.getResources())
-                    .subscribe(resource -> log.info("init : resources {}", resource));
+                    .subscribe(resource -> log.debug("init : resources {}", resource));
 
             Observable.fromIterable(sequenceService.getLoadedSequences())
-                    .subscribe(loadedSequence ->  log.info("init : loadedSequence {}", loadedSequence));
+                    .subscribe(loadedSequence ->  log.debug("init : loadedSequence {} -> {}", loadedSequence.getName(), loadedSequence.getPath()));
         }
     }
 

@@ -8,10 +8,8 @@ import me.antoniocaccamo.player.rx.model.Model;
 import me.antoniocaccamo.player.rx.model.jackson.ResourceCollectionWrapprer;
 import me.antoniocaccamo.player.rx.model.resource.LocalResource;
 import me.antoniocaccamo.player.rx.model.resource.RemoteResource;
-import me.antoniocaccamo.player.rx.model.resource.Resource;
 import me.antoniocaccamo.player.rx.model.sequence.Media;
-import me.antoniocaccamo.player.rx.model.sequence.Sequence;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -20,7 +18,7 @@ import java.text.MessageFormat;
 import java.time.Duration;
 import java.util.Arrays;
 
-
+@Component
 @Slf4j
 public class Constants {
 
