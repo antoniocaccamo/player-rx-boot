@@ -10,6 +10,8 @@ import com.fasterxml.jackson.datatype.jsr310.deser.DurationDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.DurationSerializer;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import me.antoniocaccamo.player.rx.config.Constants;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -31,7 +33,7 @@ import java.time.Duration;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = LocalResource.class, name = "local"),
         @JsonSubTypes.Type(value = RemoteResource.class, name = "remote")
-})
+}) @Slf4j
 public abstract class Resource {
 
  //   @Id
@@ -121,4 +123,11 @@ public abstract class Resource {
  //  @Transient
     @JsonIgnore
     public abstract String getHash();
+
+
+    @JsonIgnore
+    public boolean isAvailable() {
+        log.warn("{} : isAvailable ", Constants.TODO);
+        return true;
+    }
 }

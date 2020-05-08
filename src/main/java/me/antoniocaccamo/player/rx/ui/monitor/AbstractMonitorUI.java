@@ -1,4 +1,4 @@
-package me.antoniocaccamo.player.rx.ui;
+package me.antoniocaccamo.player.rx.ui.monitor;
 
 import com.diffplug.common.swt.ColorPool;
 import com.diffplug.common.swt.Layouts;
@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.antoniocaccamo.player.rx.config.Constants;
 import me.antoniocaccamo.player.rx.model.sequence.Media;
 import me.antoniocaccamo.player.rx.task.ShowMediaTask;
+import me.antoniocaccamo.player.rx.ui.ScreenUI;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
@@ -18,18 +19,18 @@ import java.util.Timer;
  * @author antoniocaccamo on 19/02/2020
  */
 @Slf4j
-public abstract class AbstractUI extends Composite {
+public abstract class AbstractMonitorUI extends Composite {
 
-    private final Optional<MonitorUI> monitorUI;
+    private final Optional<ScreenUI> monitorUI;
     private ShowMediaTask durationTask;
 
-    public AbstractUI(MonitorUI monitorUI, Composite parent) {
+    public AbstractMonitorUI(ScreenUI screenUI, Composite parent) {
         super(parent, SWT.NONE);
         Layouts.setGrid(this).margin(0).spacing(0).numColumns(1).columnsEqualWidth(true);
         Layouts.setGridData(this).grabAll();
         setBackground(ColorPool.forWidget(this).getSystemColor(SWT.COLOR_BLACK));
 
-        this.monitorUI = Optional.ofNullable(monitorUI);
+        this.monitorUI = Optional.ofNullable(screenUI);
     }
 
     protected long startInMillis;
@@ -47,10 +48,9 @@ public abstract class AbstractUI extends Composite {
     private Duration shown;
 
     public void play()  {
-        if ( ! current.isAvailable() ) {
+        if ( ! current.isPlayable() ) {
             next();
         }
-        log.debug("playyyyyyyy");
         shown = Duration.ZERO;
         this.startInMillis = LocalDateTime.now().getNano();
         durationTask = new ShowMediaTask(this, current.getDuration() );
@@ -103,7 +103,7 @@ public abstract class AbstractUI extends Composite {
         monitorUI.ifPresent( ui -> ui.updatePercentageProgess( actual, total  ));
     }
 
-    public Optional<MonitorUI> getMonitorUI() {
+    public Optional<ScreenUI> getMonitorUI() {
         return monitorUI;
     }
 }

@@ -15,6 +15,7 @@ public class ResumeCommandEvent extends CommandEvent {
     private final Media media;
 
     public ResumeCommandEvent(Media media) {
+        super(CommandEventType.RESUME);
         this.media = media;
     }
 

@@ -1,27 +1,18 @@
 package me.antoniocaccamo.player.rx.ui.library;
 
-import com.diffplug.common.rx.RxBox;
 import com.diffplug.common.swt.Layouts;
-import com.diffplug.common.swt.jface.ColumnViewerFormat;
-import com.diffplug.common.swt.jface.ViewerMisc;
 import io.reactivex.subjects.PublishSubject;
 import lombok.extern.slf4j.Slf4j;
 import me.antoniocaccamo.player.rx.Application;
-import me.antoniocaccamo.player.rx.model.preference.LoadedSequence;
 import me.antoniocaccamo.player.rx.model.resource.Resource;
 import me.antoniocaccamo.player.rx.model.sequence.Media;
 import me.antoniocaccamo.player.rx.service.SequenceService;
-import me.antoniocaccamo.player.rx.ui.monitor.BrowserUI;
+import me.antoniocaccamo.player.rx.ui.monitor.MonitorBrowserUI;
 
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-
-import ch.qos.logback.core.util.Duration;
-
-import java.util.Optional;
 
 /**
  * @author antoniocaccamo on 05/05/2020
@@ -45,7 +36,7 @@ public class PreviewLibraryUI extends Composite {
         group.setText("preview");
         Layouts.setGrid(group).numColumns(1);
         Layouts.setGridData(group).grabAll();
-        BrowserUI composite = new BrowserUI(null, group);
+        MonitorBrowserUI composite = new MonitorBrowserUI(null, group);
         Layouts.setGridData(composite).grabAll();
 
         

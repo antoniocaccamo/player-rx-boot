@@ -15,6 +15,7 @@ public class PauseCommandEvent extends CommandEvent {
     private final Media media;
 
     public PauseCommandEvent(Media media) {
+        super(CommandEventType.PAUSE);
         this.media = media;
     }
 

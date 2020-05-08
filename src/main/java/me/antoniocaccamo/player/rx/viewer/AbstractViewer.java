@@ -3,7 +3,7 @@ package me.antoniocaccamo.player.rx.viewer;
 import lombok.Getter;
 import lombok.Setter;
 import me.antoniocaccamo.player.rx.model.sequence.Media;
-import me.antoniocaccamo.player.rx.ui.AbstractUI;
+import me.antoniocaccamo.player.rx.ui.monitor.AbstractMonitorUI;
 
 /**
  * @author antoniocaccamo on 19/02/2020
@@ -12,12 +12,12 @@ import me.antoniocaccamo.player.rx.ui.AbstractUI;
 public abstract class AbstractViewer {
 
 
-    protected final AbstractUI ui;
+    protected final AbstractMonitorUI ui;
 
     protected Media current;
 
 
-    public AbstractViewer(AbstractUI ui) {
+    public AbstractViewer(AbstractMonitorUI ui) {
         this.ui = ui;
     }
 

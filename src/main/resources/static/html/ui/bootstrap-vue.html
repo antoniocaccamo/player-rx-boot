@@ -11,18 +11,18 @@
     <!-- Add this to <head> -->
 
     <!-- Load required Bootstrap and BootstrapVue CSS -->
-    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
 
     <!-- Load polyfills to support older browsers -->
     <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script>
 
     <!-- Load Vue followed by BootstrapVue -->
-    <script src="//unpkg.com/vue@latest/dist/vue.min.js"></script>
-    <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+    <script src="https://unpkg.com/vue@latest/dist/vue.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
 
     <!-- Load the following for BootstrapVueIcons support -->
-    <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
@@ -53,24 +53,19 @@
     <!-- Our application root element -->
     <div id="app">
 
+
       <b-container fluid style="margin:0px; padding:0px" class="bv-example-row">
-
-        <b-row no-gutters v-if="data.weather.conditions">
-
+        <b-row no-gutters v-if="weather.conditions">
           <b-col>
-            <b-img :src="show.browser" style="width:100%; height:100%"></b-img>
+            <photo-ui :path="show.browser"></photo-ui>
           </b-col>
-
         </b-row>
 
         <b-row no-gutters style="height: 100%;">
-
           <b-col>
-
             <b-row no-gutters style="height: 100%;">
-
-              <b-col v-for="w in data.weather.conditions.weather" v-bind:key="w.date">
-                <b-img :src=weatherImage(w.hourly[0].weatherIconUrl[0].value.split('/').pop()) fluid-grow ></b-img>
+              <b-col v-for="w in weather.conditions.weather" v-bind:key="w.date">
+                <photo-ui :path="weatherImage(w.hourly[0].weatherIconUrl[0].value.split('/').pop())"></photo-ui>
               </b-col>
             </b-row>
 
@@ -83,13 +78,13 @@
 
     </div>
 
-
-
     <!-- Start running your app -->
     <script>
 
-const data = {
 
+
+
+var data = {
     'name' : '',
 
     'ui' : '',
@@ -135,30 +130,35 @@ const data = {
     ]
 };
 
-      window.app = new Vue({
-        el: "#app",
-        data: data,
-        computed: {
-          showAlert : function() {
-            if (this.name.length > 4)
-                return true;
-            return false;            
-          }
-        },
-        mounted : function() {
-          console.log("....");
-          axios.get("weather.json")
-            .then( function(resp) {
-                    data.weather.conditions = resp.data.data;
-                 });
-        },
-        methods : {
-          weatherImage :  function(img) {
-            return '../weather/images/' + img;
-          }
-        }
-      })
-    </script>
+Vue.component( "photo-ui", {
+  props     : ['path'],
+  template  : "<b-img :src=\"path\" fluid-grow></b-img>"
+})
+
+window.app = new Vue({
+  el: "#app",
+  data: data,
+  computed: {
+    showAlert : function() {
+    if (this.name.length > 4)
+        return true;
+    return false;            
+    }
+  },
+  mounted : function() {
+  console.log("....");
+  axios.get("weather.json")
+  .then( function(resp) {
+          data.weather.conditions = resp.data.data;
+        });
+  },
+  methods : {
+    weatherImage :  function(img) {
+    return '../weather/images/' + img;
+    }
+  }
+})
+  </script>
 
   </body>
 </html>

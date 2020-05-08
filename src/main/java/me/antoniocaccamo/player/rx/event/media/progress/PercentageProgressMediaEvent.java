@@ -15,11 +15,10 @@ public class PercentageProgressMediaEvent extends MediaEvent {
     @Getter  private final long total;
 
     public PercentageProgressMediaEvent(Media media, long actual, long total) {
-        super(media);
+        super(MediaEventType.PERCENTAGE_PROGRESS, media);
         this.actual = actual;
         this.total = total;
     }
-
 
     @Override
     public String toString() {
@@ -28,4 +27,5 @@ public class PercentageProgressMediaEvent extends MediaEvent {
                 .append("total" , total)
                 .toString();
     }
+
 }

@@ -12,9 +12,8 @@ public class ErrorProgressMediaEvent extends MediaEvent {
     private final Throwable throwable;
 
     public ErrorProgressMediaEvent(Media media, Throwable throwable) {
-        super(media);
+        super(MediaEventType.ERROR, media);
         this.throwable = throwable;
     }
-
 
 }

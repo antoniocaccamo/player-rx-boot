@@ -274,16 +274,33 @@ public class Media implements Playable, Cloneable{
     }
 
 
-    public boolean isPlayable(LocalDateTime now) {
-        log.warn("{} : isPlayable ", Constants.TODO);
+    @JsonIgnore
+    public boolean isPlayable(LocalDateTime localDateTime) {
+        log.warn("{} : isPlayable @ localDateTime ", Constants.TODO, localDateTime);
+        return getResource().isAvailable() &&  validateDate() && validateTime();
+
+    }
+
+    private boolean validateTime() {
+        return true;
+    }
+
+    private boolean validateDate() {
         return true;
     }
 
     @JsonIgnore
-    public boolean isAvailable() {
-        log.warn("{} : isAvailable ", Constants.TODO);
-        return true;
+    public boolean isDated() {
+        return start != null && end !=null;
     }
+
+    @JsonIgnore
+    public boolean isTimed() {
+        return from != null && to !=null;
+    }
+
+
+
 
     @Override
     public String toString() {

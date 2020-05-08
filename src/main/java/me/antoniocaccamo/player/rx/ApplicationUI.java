@@ -44,7 +44,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class ApplicationUI {
 
-
     @Value("${spring.application.name}")
     @NotNull
     private String appname;
@@ -74,10 +73,6 @@ public class ApplicationUI {
 
     private CoatMux.Layer<Composite> tabFolderLayer;
     private CoatMux.Layer<Composite> resourceLibraryLayer;
-
-    public ApplicationUI() {
-    }
-
 
     public void show() {
 
@@ -183,12 +178,12 @@ public class ApplicationUI {
                 .setStyle(Actions.Style.PUSH)
                 .setListener(event -> {
                         Screen screen = Screen.builder()
-                                .defaultScreen(Constants.Screen.DefaultEnum.N)
-                                .size( ScreenSize.builder().width(Constants.Screen.WIDTH).height(Constants.Screen.HEIGHT).build())
-                                .location(ScreenLocation.builder().top(Constants.Screen.TOP).left(Constants.Screen.LEFT).build() )
-                                .sequence(Constants.Sequence.DefaultSequenceName)
-                                .timing(Constants.TimingEnum.ALL_DAY)
-                                .build();
+                                        .defaultScreen(Constants.Screen.DefaultEnum.N)
+                                        .size( ScreenSize.builder().width(Constants.Screen.WIDTH).height(Constants.Screen.HEIGHT).build())
+                                        .location(ScreenLocation.builder().top(Constants.Screen.TOP).left(Constants.Screen.LEFT).build() )
+                                        .sequence(Constants.Sequence.DefaultSequenceName)
+                                        .timing(Constants.TimingEnum.ALL_DAY)
+                                        .build();
                         TabItemMonitorUI cTabItem = new TabItemMonitorUI(tabFolder, screen, tabFolderIndex.getAndIncrement());
                     tabFolder.setSelection(cTabItem);
                     cTabItem.applyScreen();

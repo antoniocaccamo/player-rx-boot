@@ -25,7 +25,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.widgets.*;
-import org.springframework.beans.factory.annotation.Configurable;
 
 import javax.validation.constraints.NotNull;
 import java.time.Duration;
@@ -92,22 +91,22 @@ public class TabItemMonitorUI extends CTabItem {
                 .margin(0)
         ;
         // screen
-        Layouts.setGridData(screenGroup(composite))
+        Layouts.setGridData(groupScreen(composite))
                 .grabHorizontal();
 
         // palimpsest
-        Layouts.setGridData(palimpsestGroup(composite))
+        Layouts.setGridData(groupPalimpsest(composite))
                 .grabAll();
 
         // player
-        Layouts.setGridData(playerGroup(composite))
+        Layouts.setGridData(groupPlayer(composite))
                 .grabAll();
 
         // monitor
         monitorUI =
                 Shells.builder(SWT.NONE, cmp -> {
                     Layouts.setGrid(cmp).margin(0).spacing(0);
-                    Layouts.setGridData( new MonitorUI(cmp, index, commandEventSubject, mediaEventSubject) )
+                    Layouts.setGridData( new ScreenUI(cmp, index, commandEventSubject, mediaEventSubject) )
                             .grabAll();
                 })
                         .setSize(screen.getSize().toPoint())
@@ -275,7 +274,7 @@ public class TabItemMonitorUI extends CTabItem {
 
 
     @NotNull
-    private Group screenGroup(Composite composite) {
+    private Group groupScreen(Composite composite) {
         Label label     = null;
         Spinner spinner = null;
 
@@ -409,7 +408,7 @@ public class TabItemMonitorUI extends CTabItem {
         return group;
     }
 
-    private Group palimpsestGroup(Composite composite) {
+    private Group groupPalimpsest(Composite composite) {
         Label label = null;
         Spinner spinner = null;
 
@@ -426,7 +425,7 @@ public class TabItemMonitorUI extends CTabItem {
     }
 
     @NotNull
-    private Group playerGroup(Composite composite) {
+    private Group groupPlayer(Composite composite) {
 
         Label label = null;
         Button button =null;

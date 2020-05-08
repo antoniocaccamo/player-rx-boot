@@ -15,6 +15,7 @@ public class PlayCommandEvent extends CommandEvent {
     private final Media media;
 
     public PlayCommandEvent(Media media) {
+        super(CommandEventType.PLAY);
         this.media = media;
     }
 

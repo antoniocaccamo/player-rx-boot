@@ -1,7 +1,6 @@
 package me.antoniocaccamo.player.rx.event.media.command;
 
 
-import me.antoniocaccamo.player.rx.model.sequence.Media;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -10,6 +9,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class StartCommandEvent extends CommandEvent {
 
+
+    public StartCommandEvent() {
+        super(CommandEventType.START);
+    }
 
     @Override
     public String toString() {

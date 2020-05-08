@@ -68,9 +68,10 @@ public class LocaleHelper {
 		public static String Title = "app.title";
 
 		public static class Menu {
+			private static String prefix = "app.menu";
 
 			public static class File {
-				private static String prefix = "app.menu.file";
+				private static String prefix = String.join(DELIMETER,Application.Menu.prefix,"file");
 				public static String File   = getText( prefix);
 				public static String Save 	= getText( String.join( DELIMETER, prefix, "save"));
 				public static String Prefs 	= getText( String.join(DELIMETER, prefix, "prefs"));
@@ -138,8 +139,14 @@ public class LocaleHelper {
 			}
 
 			public static class Sequence {
-				public static String Sequence = String.join(DELIMETER, Application.Group.prefix, "sequence");
+				private static String prefix = String.join(DELIMETER, Application.Group.prefix, "sequence");
+				public static String Sequence = getText(prefix);
 			}
+
+		}
+
+		public static class Error{
+			protected static String prefix = "errors";
 
 		}
 	}

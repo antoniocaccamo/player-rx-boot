@@ -8,19 +8,16 @@ import lombok.extern.slf4j.Slf4j;
 import me.antoniocaccamo.player.rx.Application;
 import me.antoniocaccamo.player.rx.config.Constants;
 import me.antoniocaccamo.player.rx.model.sequence.Media;
-import me.antoniocaccamo.player.rx.ui.AbstractUI;
-import me.antoniocaccamo.player.rx.ui.MonitorUI;
+import me.antoniocaccamo.player.rx.ui.ScreenUI;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.browser.ProgressAdapter;
-import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * @author antoniocaccamo on 19/02/2020
  */
 @Slf4j
-public class BrowserUI extends AbstractUI {
+public class MonitorBrowserUI extends AbstractMonitorUI {
 
     enum ShowEnum {
         BROWSER("browser"),
@@ -45,12 +42,12 @@ public class BrowserUI extends AbstractUI {
 
     protected final ShowEnum show;
 
-    public BrowserUI(MonitorUI monitorUI, Composite wrapped){
-        this(monitorUI, wrapped, ShowEnum.BROWSER);
+    public MonitorBrowserUI(ScreenUI screenUI, Composite wrapped){
+        this(screenUI, wrapped, ShowEnum.BROWSER);
     }
 
-    public BrowserUI(MonitorUI monitorUI, Composite wrapped, ShowEnum show) {
-        super(monitorUI, wrapped);
+    public MonitorBrowserUI(ScreenUI screenUI, Composite wrapped, ShowEnum show) {
+        super(screenUI, wrapped);
         setBackground(ColorPool.forWidget(this).getSystemColor(SWT.COLOR_BLACK));
 
         browser = new Browser(this, SWT.NONE);
@@ -78,7 +75,6 @@ public class BrowserUI extends AbstractUI {
     }
 
 
-
     @Override
     public void setCurrent(Media media) {
         ShowEnum ui = ShowEnum.BROWSER;
@@ -94,7 +90,12 @@ public class BrowserUI extends AbstractUI {
         }
         final String execute = String.format("data.ui = '%s'", ui);
         SwtExec.async().guardOn(browser).execute(
-                () -> log.info("browser.execute({}) : {}", execute, browser.execute(execute))
+                () -> log.info("getIndex() [{}] - browser.execute({}) : result {}",
+                        getMonitorUI().isPresent() ?
+                                getMonitorUI().get().getIndex() : Constants.Screen.COLOR_SEPARATOR,
+                        execute,
+                        browser.execute(execute)
+                    )
         );
         super.setCurrent(media);
     }

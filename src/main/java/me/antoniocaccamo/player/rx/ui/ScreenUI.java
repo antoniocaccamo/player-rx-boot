@@ -20,17 +20,17 @@ import java.util.Map;
  * @author antoniocaccamo on 20/02/2020
  */
 @Slf4j
-public class MonitorUI extends CoatMux {
+public class ScreenUI extends CoatMux {
 
     private final PublishSubject<CommandEvent> commandEventSubject;
     private final PublishSubject<MediaEvent>   mediaEventSubject;
 
-    private final Map<Constants.Resource.Type, CoatMux.Layer<AbstractUI> > layerMap = new HashMap<>();
+    private final Map<Constants.Resource.Type, CoatMux.Layer<AbstractMonitorUI> > layerMap = new HashMap<>();
     private final int index;
 
-    private  CoatMux.Layer<AbstractUI> currenLayer;
+    private  CoatMux.Layer<AbstractMonitorUI> currenLayer;
 
-    public MonitorUI(Composite wrapped, int index, PublishSubject<CommandEvent> commandEventSubject, PublishSubject<MediaEvent> mediaEventSubject) {
+    public ScreenUI(Composite wrapped, int index, PublishSubject<CommandEvent> commandEventSubject, PublishSubject<MediaEvent> mediaEventSubject) {
         super(wrapped, SWT.NONE);
         this.index = index;
         log.info("monitor # {}", getIndex() );
@@ -72,7 +72,7 @@ public class MonitorUI extends CoatMux {
                     .spacing(0)
                     .margin(0)
             ;
-            return new BrowserUI(this, composite);
+            return new MonitorBrowserUI(this, composite);
 
         }));
 
@@ -132,44 +132,51 @@ public class MonitorUI extends CoatMux {
     }
 
     private void manageCommandEvent(CommandEvent evt) throws InterruptedException {
-        log.info("getIndex() [{}] - event received : {}", getIndex(), evt);
+        log.debug("getIndex() [{}] - event received : {}", getIndex(), evt);
 
-        if ( evt instanceof PlayCommandEvent ) {
-            PlayCommandEvent playCommandEvent = (PlayCommandEvent) evt;
-            play(  playCommandEvent.getMedia() );
+        switch (evt.getType()) {
+
+            case START:
+            case DEATIVATE:
+                break;
+
+            case PLAY:
+                PlayCommandEvent playCommandEvent = (PlayCommandEvent) evt;
+                play(  playCommandEvent.getMedia() );
+                break;
+
+            case PAUSE:
+                pause();
+                break;
+
+            case RESUME:
+                resume();
+                break;
+
+            case STOP:
+                stop();
         }
 
-        if ( evt instanceof PauseCommandEvent) {
-            pause();
-        }
-
-        if ( evt instanceof ResumeCommandEvent) {
-            resume();
-        }
-
-        if ( evt instanceof StopCommandEvent){
-            stop();
-        }
     }
 
 
 
-    private void play( Media media ) {
-        log.info("getIndex() [{}] - playing media : {}", getIndex(), media);
+    protected void play( Media media ) {
+        log.info("getIndex() [{}] - playing media => {}  resource: {}", getIndex(), media.getDuration(),  media.getResource());
         // currenLayer  = this.layerMap.get(  media.getResource().getType() );
         currenLayer = currenLayer  == null ? this.layerMap.get(  Constants.Resource.Type.BROWSER ) : currenLayer;
         currenLayer.getHandle().setCurrent(media);
         currenLayer.getHandle().play();
         currenLayer.bringToTop();
-        log.info("getIndex() [{}] - showing : {}", getIndex(), currenLayer.getHandle().getClass().getSimpleName());
+        //log.debug("getIndex() [{}] - showing : {}", getIndex(), currenLayer.getHandle().getClass().getSimpleName());
         mediaEventSubject.onNext( new StartedProgressMediaEvent(media));
     }
 
-    private void pause() {
+    protected void pause() {
         currenLayer.getHandle().pause();
     }
 
-    private void resume() {
+    protected void resume() {
         currenLayer.getHandle().resume();
     }
 
@@ -186,7 +193,7 @@ public class MonitorUI extends CoatMux {
         );
     }
 
-    private void stop() {
+    protected void stop() {
         currenLayer.getHandle().stop();
     }
 
