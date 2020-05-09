@@ -11,5 +11,5 @@ public interface Playable {
 
     boolean isPlayable(LocalDateTime now);
 
-    boolean isAvailable();
+//  boolean isAvailable();
 }

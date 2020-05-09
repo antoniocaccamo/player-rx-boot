@@ -48,9 +48,10 @@ public abstract class AbstractMonitorUI extends Composite {
     private Duration shown;
 
     public void play()  {
-        if ( ! current.isPlayable() ) {
-            next();
-        }
+        //if ( ! current.isPlayable() ) {
+        //    next();
+        //}
+        
         shown = Duration.ZERO;
         this.startInMillis = LocalDateTime.now().getNano();
         durationTask = new ShowMediaTask(this, current.getDuration() );
